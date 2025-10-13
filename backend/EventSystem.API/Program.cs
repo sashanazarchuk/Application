@@ -1,9 +1,12 @@
 using EventSystem.API.Extensions;
+using EventSystem.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApiServices();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Add NLog logging services
 builder.AddLoggingServices();

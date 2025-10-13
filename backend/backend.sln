@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSystem.API", "EventSystem.API\EventSystem.API.csproj", "{5C96A67D-D07C-4D5A-8683-9F56755A8992}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSystem.Domain", "EventSystem.Domain\EventSystem.Domain.csproj", "{30D1C2F6-2755-44FE-9534-7A48AFE01E7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSystem.Infrastructure", "EventSystem.Infrastructure\EventSystem.Infrastructure.csproj", "{CF3864FE-DAF4-48B1-ACBF-918CD6D8D07F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{30D1C2F6-2755-44FE-9534-7A48AFE01E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30D1C2F6-2755-44FE-9534-7A48AFE01E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30D1C2F6-2755-44FE-9534-7A48AFE01E7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3864FE-DAF4-48B1-ACBF-918CD6D8D07F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3864FE-DAF4-48B1-ACBF-918CD6D8D07F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3864FE-DAF4-48B1-ACBF-918CD6D8D07F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3864FE-DAF4-48B1-ACBF-918CD6D8D07F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
