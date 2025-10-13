@@ -18,6 +18,9 @@ namespace EventSystem.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // Apply all configurations from the current assembly
+            builder.ApplyConfigurationsFromAssembly(typeof(EventSystemDbContext).Assembly);
         }
 
         public DbSet<Event> Events { get; set; }
