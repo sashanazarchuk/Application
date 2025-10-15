@@ -1,4 +1,5 @@
 ﻿using EventSystem.Domain.Entities;
+using EventSystem.Infrastructure.Persistence.DataSeed;
 using EventSystem.Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -25,5 +26,6 @@ namespace EventSystem.Infrastructure.Persistence
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Participant> Participants { get; set; }
+        public DbSet<User> DomainUsers { get; set; }
     }
 }

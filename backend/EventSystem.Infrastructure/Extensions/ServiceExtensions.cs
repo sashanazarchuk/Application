@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using EventSystem.Infrastructure.Persistence.DataSeed;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,14 @@ namespace EventSystem.Infrastructure.Extensions
         {
             //Database Configuration
             services.AddDatabase(configuration);
+
+            //Identity Configuration
+            services.ConfigureIdentity();
+
+            //Register Seeders
+            services.AddScoped<UserSeeder>();
+            services.AddScoped<EventSeeder>();
+            services.AddScoped<ParticipantSeeder>();
 
             return services;
         }

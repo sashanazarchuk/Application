@@ -17,6 +17,9 @@ var app = builder.Build();
 
 app.UseSwaggerDev(app.Environment);
 
+// Seed the database
+await app.SeedAllAsync();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
