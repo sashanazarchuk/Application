@@ -1,4 +1,5 @@
 using EventSystem.API.Extensions;
+using EventSystem.API.Middlewares;
 using EventSystem.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,9 @@ app.UseSwaggerDev(app.Environment);
 
 // Seed the database
 await app.SeedAllAsync();
+
+// Use custom exception handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
