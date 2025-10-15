@@ -18,11 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\EventSystem.Application\EventSystem.Application.csproj" />
+    <ProjectReference Include="..\EventSystem.Infrastructure\EventSystem.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventSystem.Infrastructure\EventSystem.Infrastructure.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

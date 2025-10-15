@@ -9,6 +9,33 @@ namespace EventSystem.API.Extensions
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Event Management System", Version = "v1" });
+
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "Enter 'Bearer' [space] and your valid token",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                c.AddSecurityDefinition("Bearer", securityScheme);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    {
+                        securityScheme, new string[] { }
+                    }
+                };
+
+                c.AddSecurityRequirement(securityRequirement);
+
             });
 
             return services;
@@ -26,7 +53,7 @@ namespace EventSystem.API.Extensions
         {
             if (env.IsDevelopment())
                 app.UseSwaggerDocumentation();
-            
+
             return app;
         }
     }
