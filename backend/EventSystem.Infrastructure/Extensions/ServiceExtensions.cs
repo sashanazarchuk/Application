@@ -1,5 +1,8 @@
-﻿using EventSystem.Application.Settings;
+﻿using EventSystem.Application.Interfaces;
+using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.DataSeed;
+using EventSystem.Infrastructure.Profiles;
+using EventSystem.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,6 +32,10 @@ namespace EventSystem.Infrastructure.Extensions
             //JWT Settings
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.AddJwtAuthentication(configuration.GetSection("JwtSettings").Get<JwtSettings>()!);
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+            //AutoMapper Configuration
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(AppUserProfile).Assembly));
 
             return services;
         }
