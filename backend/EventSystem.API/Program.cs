@@ -1,5 +1,6 @@
 using EventSystem.API.Extensions;
 using EventSystem.API.Middlewares;
+using EventSystem.Application.Extensions;
 using EventSystem.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApiServices();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddApplicationServices();
 
 // Add NLog logging services
 builder.AddLoggingServices();

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EventSystem.Application.DTOs.Auth;
-using EventSystem.Application.Interfaces;
+using EventSystem.Application.Interfaces.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace EventSystem.Infrastructure.Services
 {
-    public class JwtTokenService : IJwtTokenService
+    internal class JwtTokenService : IJwtTokenService
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<ApplicationUser> _userManager;

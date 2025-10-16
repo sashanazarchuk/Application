@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventSystem.Application.Interfaces
+namespace EventSystem.Application.Interfaces.Services
 {
     public interface IJwtTokenService
     {

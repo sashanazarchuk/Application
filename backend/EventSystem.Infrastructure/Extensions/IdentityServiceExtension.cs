@@ -22,6 +22,7 @@ namespace EventSystem.Infrastructure.Extensions
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             })
             .AddEntityFrameworkStores<EventSystemDbContext>()
             .AddDefaultTokenProviders();
