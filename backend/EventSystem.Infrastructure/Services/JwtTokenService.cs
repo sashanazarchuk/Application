@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventSystem.Application.DTOs.Auth;
+using EventSystem.Application.Exceptions;
 using EventSystem.Application.Interfaces.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.Identity;
@@ -114,7 +115,7 @@ namespace EventSystem.Infrastructure.Services
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
-                throw new Exception("Failed to update user refresh token.");
+                throw new BusinessException("Failed to update user refresh token.");
 
             return new TokenDto
             {

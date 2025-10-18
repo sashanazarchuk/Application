@@ -1,4 +1,5 @@
-﻿using EventSystem.Domain.Entities;
+﻿using EventSystem.Application.Exceptions;
+using EventSystem.Domain.Entities;
 using EventSystem.Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -66,7 +67,7 @@ namespace EventSystem.Infrastructure.Persistence.DataSeed
             if (!result.Succeeded)
             {
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                throw new Exception($"Failed to create user {email}: {errors}");
+                throw new BusinessException($"Failed to create user {email}: {errors}");
             }
 
             _logger.LogInformation($"Created application user {email}.");

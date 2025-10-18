@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventSystem.Application.DTOs.Auth;
+using EventSystem.Application.Exceptions;
 using EventSystem.Application.Interfaces.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.Identity;
@@ -38,8 +39,8 @@ namespace EventSystem.Infrastructure.Services
 
             var result = await _userManager.CreateAsync(user, password);
 
-            if (!result.Succeeded)                 
-                throw new ApplicationException("Identity registration failed");
+            if (!result.Succeeded && result.Errors.Any(e => e.Code == "DuplicateEmail"))
+                throw new BusinessException("Email already exists.");
 
             return user.Id;
         }
@@ -48,11 +49,11 @@ namespace EventSystem.Infrastructure.Services
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
-                throw new ApplicationException("Invalid email or password.");
+                throw new BusinessException("Invalid email or password.");
 
             var isValid = await _userManager.CheckPasswordAsync(user, password);
             if (!isValid)
-                throw new ApplicationException("Invalid email or password.");
+                throw new BusinessException("Invalid email or password.");
 
             return _mapper.Map<ApplicationUserDto>(user);
         }
@@ -61,7 +62,7 @@ namespace EventSystem.Infrastructure.Services
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
 
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = null;
@@ -94,14 +95,14 @@ namespace EventSystem.Infrastructure.Services
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
 
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = expiryTime;
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
-                throw new ApplicationException("Failed to update refresh token");
+                throw new BusinessException("Failed to update refresh token");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using EventSystem.Application.Exceptions;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text.Json;
 
@@ -32,6 +33,10 @@ namespace EventSystem.API.Middlewares
         {
             var (code, message) = exception switch
             {
+                NotFoundException notFoundEx => (HttpStatusCode.NotFound, notFoundEx.Message),
+                SecurityTokenException securityEx => (HttpStatusCode.Unauthorized, securityEx.Message),
+                BusinessException businessEx => (HttpStatusCode.BadRequest, businessEx.Message),
+                ArgumentNullException argumentEx => (HttpStatusCode.BadRequest, argumentEx.Message),        
                 _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred.")
             };
 
