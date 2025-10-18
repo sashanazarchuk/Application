@@ -22,7 +22,7 @@ namespace EventSystem.Application.Commands.Account.Login
 
         public async Task<TokenDto> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var userDto = await _userService.LoginAsync(request.Email, request.Password);
+            var userDto = await _userService.LoginAsync(request.dto.Email, request.dto.Password);
             return await _userService.GenerateTokensAsync(userDto.Id, userDto.Email);
         }
     }

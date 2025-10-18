@@ -3,6 +3,7 @@ using EventSystem.Application.DTOs.Auth;
 using EventSystem.Application.Exceptions;
 using EventSystem.Application.Interfaces.Services;
 using EventSystem.Application.Settings;
+using EventSystem.Domain.Entities;
 using EventSystem.Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -27,22 +28,18 @@ namespace EventSystem.Infrastructure.Services
             _userManager = userManager;
             _mapper = mapper;
         }
-        public async Task<Guid> RegisterAsync(string fullName, string email, string password)
+        public async Task<Guid> RegisterAsync(User domainUser, string email, string password)
         {
-            var user = new ApplicationUser
-            {
-                Id = Guid.NewGuid(),
-                FullName = fullName,
-                Email = email,
-                UserName = email
-            };
+            var appUser = _mapper.Map<ApplicationUser>(domainUser);
+            appUser.UserName = email;
+            appUser.Email = email;
 
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(appUser, password);
 
             if (!result.Succeeded && result.Errors.Any(e => e.Code == "DuplicateEmail"))
                 throw new BusinessException("Email already exists.");
 
-            return user.Id;
+            return appUser.Id;
         }
 
         public async Task<ApplicationUserDto> LoginAsync(string email, string password)

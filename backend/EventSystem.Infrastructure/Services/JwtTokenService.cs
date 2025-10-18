@@ -5,6 +5,7 @@ using EventSystem.Application.Interfaces.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -64,46 +65,16 @@ namespace EventSystem.Infrastructure.Services
             }
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public async Task<TokenDto> RefreshToken(string refreshToken)
         {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidIssuer = _jwtSettings.Issuer,
-                ValidAudience = _jwtSettings.Audience,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
-                ValidateLifetime = false
-            };
+            if (string.IsNullOrEmpty(refreshToken))
+                throw new SecurityTokenException("Refresh token is required.");
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
 
-            SecurityToken securityToken;
-
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-            var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                throw new SecurityTokenException("Invalid token");
-
-            return principal;
-        }
-
-        public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
-        {
-            var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
-            var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (string.IsNullOrEmpty(userId))
-                throw new SecurityTokenException("Invalid token: userId is missing");
-
-            var user = await _userManager.FindByIdAsync(userId);
-
-            if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-            {
-                throw new SecurityTokenException("Invalid refresh token request.");
-            }
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                throw new SecurityTokenException("Invalid or expired refresh token.");
 
             var applicationUserDto = _mapper.Map<ApplicationUserDto>(user);
             var newAccessToken = CreateAccessToken(applicationUserDto);

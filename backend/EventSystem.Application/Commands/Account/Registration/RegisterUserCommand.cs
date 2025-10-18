@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace EventSystem.Application.Commands.Account.Registration
 {
-    public record RegisterUserCommand(string FullName, string Email, string Password): IRequest<TokenDto>;    
+    public record RegisterUserCommand(RegisterUserDto dto): IRequest<TokenDto>;    
 }

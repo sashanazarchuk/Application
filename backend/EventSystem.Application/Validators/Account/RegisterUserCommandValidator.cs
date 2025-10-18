@@ -12,15 +12,15 @@ namespace EventSystem.Application.Validators.Account
     {
         public RegisterUserCommandValidator()
         {
-            RuleFor(x => x.FullName)
+            RuleFor(x => x.dto.FullName)
                 .NotEmpty().WithMessage("Full name is required.")
                 .Length(2, 30).WithMessage("Full name must be between 2 and 30 characters.");
 
-            RuleFor(x => x.Email)
+            RuleFor(x => x.dto.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("A valid email is required.");
 
-            RuleFor(x => x.Password)
+            RuleFor(x => x.dto.Password)
                 .NotEmpty().WithMessage("Password is required.")
                 .MinimumLength(5).WithMessage("Password must be at least 5 characters long.")
                 .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")

@@ -12,7 +12,6 @@ namespace EventSystem.Application.Interfaces.Services
     {
         string CreateAccessToken(ApplicationUserDto user);
         string GenerateRefreshToken();
-        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
-        Task<TokenDto> RefreshToken(TokenDto tokenDto);
+        Task<TokenDto> RefreshToken(string refreshToken);
     }
 }

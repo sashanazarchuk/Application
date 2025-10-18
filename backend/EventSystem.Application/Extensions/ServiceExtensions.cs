@@ -1,4 +1,5 @@
-﻿using EventSystem.Application.Validators.Account;
+﻿using EventSystem.Application.Profiles;
+using EventSystem.Application.Validators.Account;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
@@ -20,6 +21,9 @@ namespace EventSystem.Application.Extensions
             // Register FluentValidation
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
+
+            // Register AutoMapper
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(DomainUserProfile).Assembly));
 
             return services;
         }

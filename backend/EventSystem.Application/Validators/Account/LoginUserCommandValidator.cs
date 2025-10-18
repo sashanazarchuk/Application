@@ -12,11 +12,11 @@ namespace EventSystem.Application.Validators.Account
     {
         public LoginUserCommandValidator()
         {
-            RuleFor(x => x.Email)
+            RuleFor(x => x.dto.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("A valid email is required.");
 
-            RuleFor(x => x.Password)
+            RuleFor(x => x.dto.Password)
                 .NotEmpty().WithMessage("Password is required.");
         }
     }

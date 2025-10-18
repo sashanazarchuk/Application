@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace EventSystem.Application.Commands.Account.Login
 {
-    public record LoginUserCommand(string Email, string Password) : IRequest<TokenDto>;
+    public record LoginUserCommand(LoginUserDto dto) : IRequest<TokenDto>;
 }

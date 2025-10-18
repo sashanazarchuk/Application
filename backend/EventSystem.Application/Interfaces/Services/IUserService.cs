@@ -1,4 +1,5 @@
 ﻿using EventSystem.Application.DTOs.Auth;
+using EventSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace EventSystem.Application.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<Guid> RegisterAsync(string fullName, string email, string password);
+        Task<Guid> RegisterAsync(User domainUser, string email, string password);
         Task<ApplicationUserDto> LoginAsync(string email, string password);
         Task LogoutAsync(Guid userId);
         Task<TokenDto> GenerateTokensAsync(Guid userId, string email);
