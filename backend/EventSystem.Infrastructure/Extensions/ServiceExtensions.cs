@@ -42,6 +42,7 @@ namespace EventSystem.Infrastructure.Extensions
             // Dependency Injection for Repositories and Services
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEventRepository, EventRepository>();
 
             return services;
         }

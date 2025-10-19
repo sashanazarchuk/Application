@@ -20,10 +20,10 @@ namespace EventSystem.Application.Commands.Account.RefreshToken
 
         public async Task<TokenDto> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            if (request?.refreshToken == null)
-                throw new ArgumentNullException(nameof(request.refreshToken));
+            if (request?.dto.RefreshToken == null)
+                throw new ArgumentNullException(nameof(request.dto.RefreshToken));
 
-            return await _jwtTokenService.RefreshToken(request.refreshToken);
+            return await _jwtTokenService.RefreshToken(request.dto.RefreshToken);
         }
     }
 }

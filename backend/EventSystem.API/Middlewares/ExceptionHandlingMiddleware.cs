@@ -36,7 +36,8 @@ namespace EventSystem.API.Middlewares
                 NotFoundException notFoundEx => (HttpStatusCode.NotFound, notFoundEx.Message),
                 SecurityTokenException securityEx => (HttpStatusCode.Unauthorized, securityEx.Message),
                 BusinessException businessEx => (HttpStatusCode.BadRequest, businessEx.Message),
-                ArgumentNullException argumentEx => (HttpStatusCode.BadRequest, argumentEx.Message),        
+                ArgumentNullException argumentEx => (HttpStatusCode.BadRequest, argumentEx.Message), 
+                ForbiddenException forbiddenEx => (HttpStatusCode.Forbidden, forbiddenEx.Message),
                 _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred.")
             };
 

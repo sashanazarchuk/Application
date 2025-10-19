@@ -20,7 +20,7 @@ namespace EventSystem.Application.Extensions
 
             // Register FluentValidation
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<RegisterUserDtoValidator>();
 
             // Register AutoMapper
             services.AddAutoMapper(cfg => cfg.AddMaps(typeof(DomainUserProfile).Assembly));

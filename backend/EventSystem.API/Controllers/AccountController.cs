@@ -2,6 +2,7 @@
 using EventSystem.Application.Commands.Account.Logout;
 using EventSystem.Application.Commands.Account.RefreshToken;
 using EventSystem.Application.Commands.Account.Registration;
+using EventSystem.Application.DTOs.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,15 +22,17 @@ namespace EventSystem.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
+        public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
         {
+            var command = new RegisterUserCommand(dto);
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
+            var command = new LoginUserCommand(dto);
             var token = await _mediator.Send(command);
             return Ok(token);
         }
@@ -51,8 +54,9 @@ namespace EventSystem.API.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshTokenCommand command)
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto dto)
         {
+            var command = new RefreshTokenCommand(dto);
             var result = await _mediator.Send(command);
             return Ok(result);
         }

@@ -4,7 +4,7 @@
     {
         public static IServiceCollection AddApiServices(this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerDocumentation();
 
             return services;

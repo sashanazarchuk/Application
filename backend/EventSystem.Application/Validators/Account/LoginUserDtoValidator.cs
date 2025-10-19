@@ -1,4 +1,4 @@
-﻿using EventSystem.Application.Commands.Account.Login;
+﻿using EventSystem.Application.DTOs.Auth;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace EventSystem.Application.Validators.Account
 {
-    public class LoginUserCommandValidator:AbstractValidator<LoginUserCommand>
+    public class LoginUserDtoValidator:AbstractValidator<LoginUserDto>
     {
-        public LoginUserCommandValidator()
+        public LoginUserDtoValidator()
         {
-            RuleFor(x => x.dto.Email)
+            RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("A valid email is required.");
 
-            RuleFor(x => x.dto.Password)
+            RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password is required.");
         }
     }
