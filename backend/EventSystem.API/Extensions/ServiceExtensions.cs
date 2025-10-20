@@ -6,6 +6,7 @@
         {
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerDocumentation();
+            services.AddCorsPolicy();
 
             return services;
         }
