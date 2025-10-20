@@ -16,7 +16,6 @@ builder.Services.AddApplicationServices();
 builder.AddLoggingServices();
 
 var app = builder.Build();
-app.UseCorsPolicy();
 
 // Configure the HTTP request pipeline.
 
@@ -29,6 +28,8 @@ await app.SeedAllAsync();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCorsPolicy();
 
 app.UseAuthorization();
 

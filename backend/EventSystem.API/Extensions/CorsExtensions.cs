@@ -20,7 +20,7 @@
 
         public static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app)
         {
-            app.UseCors("MyCorsPolicy");
+            app.UseCors();
             return app;
         }
     }

@@ -38,7 +38,7 @@ namespace EventSystem.Application.Commands.Account.Registration
 
             domainUser.Id = identityId;
 
-            await _userRepository.AddAsync(domainUser);
+            await _userRepository.AddAsync(domainUser, cancellationToken);
 
             _logger.LogInformation("User {Email} registered successfully", request.dto.Email);
             return await _userService.GenerateTokensAsync(domainUser.Id, request.dto.Email);

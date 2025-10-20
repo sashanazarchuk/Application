@@ -9,6 +9,7 @@ namespace EventSystem.Application.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        Task AddAsync(User user);
+        Task AddAsync(User user, CancellationToken token);
+        Task<User?> GetByIdAsync (Guid id, CancellationToken token);
     }
 }

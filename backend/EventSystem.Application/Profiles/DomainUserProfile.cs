@@ -1,4 +1,5 @@
 ﻿using EventSystem.Application.DTOs.Auth;
+using EventSystem.Application.DTOs.Users;
 using EventSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace EventSystem.Application.Profiles
                 .ForMember(dest => dest.AdminEvents, opt=> opt.Ignore())
                 .ForMember(dest => dest.Participations, opt=> opt.Ignore());
 
-
+            CreateMap<UserDto, User>().ReverseMap();
         }
     }
 }
