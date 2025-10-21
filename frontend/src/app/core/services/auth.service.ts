@@ -4,7 +4,7 @@ import { Observable, tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { TokenService } from "./token.service";
 import { UserService } from "./user.service";
-import { LoginDto, LoginResponse } from "../models/auth.model";
+import { LoginDto, AuthResponse, RegisterDto } from "../models/auth.model";
 
 @Injectable({
     providedIn: 'root'
@@ -16,8 +16,8 @@ export class AuthService {
 
     constructor(private http: HttpClient, private tokenService: TokenService, private userService: UserService) { }
 
-    login(dto: LoginDto): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/login`, dto).pipe(
+    login(dto: LoginDto): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, dto).pipe(
             tap(res => {
                 this.tokenService.storeTokens(res.accessToken, res.refreshToken);
                 this.userService.loadCurrentUser().subscribe();
@@ -41,5 +41,16 @@ export class AuthService {
 
     isLoggedIn(): boolean {
         return !!this.tokenService.getAccessToken();
+    }
+
+    register(dto: RegisterDto): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(`${this.baseUrl}/auth/register`, dto).pipe(
+            tap(res => {
+                
+                this.tokenService.storeTokens(res.accessToken, res.refreshToken);
+                
+                this.userService.loadCurrentUser().subscribe();
+            })
+        );
     }
 }

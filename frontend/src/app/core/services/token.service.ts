@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { Observable, tap, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { LoginResponse } from "../models/auth.model";
+import { AuthResponse } from "../models/auth.model";
 
 @Injectable({
     providedIn: 'root'
@@ -14,11 +14,11 @@ export class TokenService {
 
     constructor(private http: HttpClient) { }
 
-    refreshToken(): Observable<LoginResponse> {
+    refreshToken(): Observable<AuthResponse> {
         const refresh = this.getRefreshToken();
         if (!refresh) return throwError(() => new Error('No refresh token'));
 
-        return this.http.post<LoginResponse>(`${this.baseUrl}/auth/refresh`, { refreshToken: refresh }).pipe(
+        return this.http.post<AuthResponse>(`${this.baseUrl}/auth/refresh`, { refreshToken: refresh }).pipe(
             tap(res => this.storeTokens(res.accessToken, res.refreshToken))
         );
     }

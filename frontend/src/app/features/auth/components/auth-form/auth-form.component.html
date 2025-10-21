@@ -1,0 +1,58 @@
+<div class="flex flex-col items-center justify-center mt-20 bg-gray-50">
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">{{ title }}</h1>
+
+<form (ngSubmit)="onSubmit()" #authForm="ngForm" class="flex flex-col gap-4">
+            @if (showFullname) {
+
+            <input type="text" [(ngModel)]="fullname" name="fullname" placeholder="Full Name" required
+                #fullnameRef="ngModel" class="border p-2 rounded-lg" />
+            @if (fullnameRef.invalid && fullnameRef.touched) {
+            <p class="text-red-500 text-sm mt-1">
+                Full Name is required
+            </p>
+            }
+            }
+
+            <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required #emailRef="ngModel"
+                class="border p-2 rounded-lg" />
+            @if (emailRef.invalid && emailRef.touched) {
+            <p class="text-red-500 text-sm mt-1">
+                Valid Email is required
+            </p>
+            }
+
+            <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required
+                #passwordRef="ngModel" class="border p-2 rounded-lg" />
+            @if (passwordRef.invalid && passwordRef.touched) {
+            <p class="text-red-500 text-sm mt-1">
+                Password is required
+            </p>
+            }
+            <button type="submit" [disabled]="!authForm.form.valid"
+                class="bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition cursor-pointer">
+                {{ buttonText }}
+            </button>
+
+            @if (errorMessage) {
+            <p class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+            }
+        </form>
+    </div>
+
+    <div class="text-center mt-4 text-sm text-gray-600">
+        {{ linkText }}
+        <a [routerLink]="linkUrl" class="text-blue-500 hover:cursor-pointer">
+            {{ linkActionText }}
+        </a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+ 
