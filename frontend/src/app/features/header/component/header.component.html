@@ -1,6 +1,6 @@
 <header class="fixed top-0 left-0 w-full flex justify-end items-center p-4 bg-white shadow-md z-50">
     <nav class="flex items-center space-x-6">
-        <a routerLink="/event" class="text-gray-800 hover:text-blue-500 cursor-pointer">Events</a>
+        <a routerLink="/events" class="text-gray-800 hover:text-blue-500 cursor-pointer">Events</a>
         <ng-container *ngIf="currentUser$ | async as user">
             <a routerLink="/" class="text-gray-800 hover:text-blue-500 cursor-pointer">My Events</a>
         </ng-container>

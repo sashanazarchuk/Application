@@ -1,11 +1,7 @@
-<div class="p-6">
-    <div class="flex justify-between items-center">
-        <div class="pl-10">
-            <h1 class="font-bold text-5xl mb-2">My Events</h1>
-            <p class="text-lg text-gray-600">View and manage your event calendar</p>
-        </div>
-        
-        <app-button text="+ Create Event" link="/contact" class="px-10"></app-button>
-    </div>
-    <app-calendar-component [events]="events"></app-calendar-component>
-</div>
+<app-event-header
+  title="My Events"
+  subtitle="View and manage your event calendar"
+  [showCreateButton]="true">
+</app-event-header>
+
+<app-calendar-component [events]="events"></app-calendar-component>

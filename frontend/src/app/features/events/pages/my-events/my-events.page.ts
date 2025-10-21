@@ -3,12 +3,12 @@ import { CalendarComponent } from '../../components/calendar/calendar.component'
 import { CommonModule } from '@angular/common';
 import { EventDto } from '../../models/event.model';
 import { EventService } from '../../services/event.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { EventHeaderComponent } from '../../components/event-header/event-header.component';
 
 @Component({
     selector: 'app-my-events',
     standalone: true,
-    imports: [CommonModule, CalendarComponent, ButtonComponent],
+    imports: [CommonModule, CalendarComponent, EventHeaderComponent],
     templateUrl: './my-events.page.html',
 
 })
