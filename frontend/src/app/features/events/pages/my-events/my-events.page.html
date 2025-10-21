@@ -4,4 +4,6 @@
   [showCreateButton]="true">
 </app-event-header>
 
-<app-calendar-component [events]="events"></app-calendar-component>
+<ng-container *ngIf="events$ | async as events">
+  <app-calendar-component [events]="events"></app-calendar-component>
+</ng-container>

@@ -112,10 +112,10 @@ namespace EventSystem.API.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetCarById(Guid id)
+        public async Task<IActionResult> GetEventById(Guid id)
         {
-            var carBrand = await _mediator.Send(new GetEventByIdQuery(id));
-            return Ok(carBrand);
+            var events = await _mediator.Send(new GetEventByIdQuery(id));
+            return Ok(events);
         }
     }
 }

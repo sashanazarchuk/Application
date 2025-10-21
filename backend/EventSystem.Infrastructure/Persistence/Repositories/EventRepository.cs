@@ -28,6 +28,7 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         public async Task<Event?> GetByIdAsync(Guid id, CancellationToken token)
         {
             return await _context.Events
+               .Include(e=>e.Participants)
                .AsNoTracking()
                .FirstOrDefaultAsync(e => e.Id == id, token);
         }

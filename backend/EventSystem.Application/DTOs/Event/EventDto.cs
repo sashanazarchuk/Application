@@ -16,5 +16,7 @@ namespace EventSystem.Application.DTOs.Event
         public int? Capacity { get; set; }
         public int CurrentParticipantsCount { get; set; }
         public bool IsFull => Capacity.HasValue && CurrentParticipantsCount >= Capacity;
+        public bool IsJoined { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

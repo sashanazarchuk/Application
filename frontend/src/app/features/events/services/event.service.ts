@@ -19,4 +19,12 @@ export class EventService {
   getMyEvents(): Observable<EventDto[]> {
     return this.http.get<EventDto[]>(`${this.baseUrl}/users/me/events`);
   }
+
+  joinEvent(id: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/events/${id}/join`, {});
+  }
+
+  leaveEvent(id: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/events/${id}/leave`, {});
+  }
 }

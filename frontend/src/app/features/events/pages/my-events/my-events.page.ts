@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { EventDto } from '../../models/event.model';
 import { EventService } from '../../services/event.service';
 import { EventHeaderComponent } from '../../components/event-header/event-header.component';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-my-events',
@@ -13,15 +14,12 @@ import { EventHeaderComponent } from '../../components/event-header/event-header
 
 })
 export class MyEventsPage {
+    
+    events$!: Observable<EventDto[]>;
 
-    events: EventDto[] = [];
     constructor(private eventService: EventService) { }
 
     ngOnInit() {
-        this.eventService.getMyEvents().subscribe({
-            next: (res) => this.events = res,
-            error: (err) => console.error('Failed to load events', err)
-        });
-
+        this.events$ = this.eventService.getMyEvents();
     }
 }

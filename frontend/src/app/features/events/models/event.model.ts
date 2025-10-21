@@ -1,10 +1,12 @@
 export interface EventDto {
-  id: string; 
+  id: string;
   title: string;
   description: string;
-  date: string; 
+  date: string;
   location: string;
   capacity?: number | null;
   currentParticipantsCount: number;
-  isFull?: boolean; 
+  isFull?: boolean;
+  isJoined?: boolean;
+  isAdmin?: boolean;
 }
