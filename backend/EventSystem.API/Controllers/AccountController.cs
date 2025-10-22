@@ -21,6 +21,13 @@ namespace EventSystem.API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Register new user
+        /// </summary>
+        /// <remarks>
+        /// This endpoint creates a new user with the provided information.
+        /// Ensure that the email is unique.
+        /// </remarks>
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
         {
@@ -29,6 +36,13 @@ namespace EventSystem.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Login user
+        /// </summary>
+        /// <remarks>
+        /// This endpoint authenticates a user with their email and password.
+        /// Returns JWT access token and refresh token.
+        /// </remarks>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto dto)
         {
@@ -37,6 +51,13 @@ namespace EventSystem.API.Controllers
             return Ok(token);
         }
 
+        /// <summary>
+        /// Logout the current user
+        /// </summary>
+        /// <remarks>
+        /// This endpoint logs out the authenticated user by invalidating their refresh token
+        /// and ending their session. Requires the user to be authorized.
+        /// </remarks>
         [Authorize]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
@@ -53,6 +74,12 @@ namespace EventSystem.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Refresh access token
+        /// </summary>
+        /// <remarks>
+        /// This endpoint generates new authentication tokens using a valid refresh token.
+        /// </remarks>
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto dto)
         {

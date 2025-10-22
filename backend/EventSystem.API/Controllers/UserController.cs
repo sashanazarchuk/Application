@@ -19,6 +19,13 @@ namespace EventSystem.API.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        /// <summary>
+        /// Get events of the authenticated user
+        /// </summary>
+        /// <remarks>
+        /// This endpoint retrieves all events created or joined by the authenticated user.
+        /// Requires the user to be authorized. Returns a list of event details.
+        /// </remarks>
         [HttpGet("me/events")]
         public async Task<IActionResult> GetMyEvents()
         {
@@ -30,6 +37,13 @@ namespace EventSystem.API.Controllers
             return Ok(events);
         }
 
+        /// <summary>
+        /// Get the authenticated user's details
+        /// </summary>
+        /// <remarks>
+        /// This endpoint retrieves the profile information of the currently authenticated user.
+        /// Requires the user to be authorized. Returns user details if found.
+        /// </remarks>
         [HttpGet("me")]
         public async Task<IActionResult> GetUserById()
         {
