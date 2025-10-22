@@ -5,11 +5,11 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { Observable } from 'rxjs';
 import { UserService } from '../../../core/services/user.service';
 import { UserDto } from '../../../core/models/user.model';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-
+import { CreateButtonComponent } from '../../../shared/components/button/create-button/create-button.component';
+  
 @Component({
   selector: 'app-header',
-  imports: [NgIf, AsyncPipe, RouterModule, ButtonComponent],
+  imports: [ NgIf, AsyncPipe, RouterModule,  CreateButtonComponent],
   templateUrl: './header.component.html',
 })
 

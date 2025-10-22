@@ -1,0 +1,15 @@
+<div *ngIf="show" class="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
+    <div class="bg-white rounded-lg p-6 max-w-xs w-full shadow-lg">
+        <h2 class="text-lg font-semibold mb-4">{{ title }}</h2>
+        <p class="mb-6">{{ message }}</p>
+        <div class="flex justify-center space-x-4">
+            <app-action-button text="Cancel" bgColor="bg-gray-500" hoverColor="hover:bg-gray-300"
+                extraClasses="text-gray-700" (clickEvent)="onCancel()">
+            </app-action-button>
+
+            <app-action-button text="Confirm" bgColor="bg-red-500" hoverColor="hover:bg-red-600"
+                extraClasses="text-white" (clickEvent)="onConfirm()">
+            </app-action-button>
+        </div>
+    </div>
+</div>

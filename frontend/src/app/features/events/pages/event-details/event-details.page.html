@@ -1,0 +1,71 @@
+<app-back-button></app-back-button>
+
+<div *ngIf="event$ | async as event" class="max-w-3xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
+
+    <div class="flex space-x-2 mt-2">
+
+        <ng-container *ngIf="event.isAdmin; else joinLeaveButton">
+            <app-action-button text="Edit" bgColor="bg-yellow-500" hoverColor="hover:bg-yellow-600"
+                (clickEvent)="goToEditEvent(event.id)">
+            </app-action-button>
+
+            <app-action-button text="Delete" bgColor="bg-red-500" hoverColor="hover:bg-red-600"
+                (clickEvent)="onDeleteEvent(event)">
+            </app-action-button>
+        </ng-container>
+
+        <ng-template #joinLeaveButton>
+            <app-action-button *ngIf="currentUserId"
+                [text]="event.isJoined ? 'Leave Event' : (event.isFull ? 'Full' : 'Join Event')"
+                [bgColor]="event.isJoined ? 'bg-red-600' : 'bg-green-600'"
+                [hoverColor]="event.isJoined ? 'hover:bg-red-700' : 'hover:bg-green-700'"
+                [disabled]="!!(!event.isJoined && event.isFull)" extraClasses="cursor-pointer transition"
+                (clickEvent)="onToggleJoin(event)">
+            </app-action-button>
+        </ng-template>
+    </div>
+
+    <div class="space-y-2">
+        <h1 class="text-3xl font-bold text-gray-900">{{ event.title }}</h1>
+        <p class="text-gray-700">{{ event.description }}</p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 text-gray-600">
+        <p class="flex items-center">
+            <img src="calendar.svg" class="w-5 h-5 mr-2" alt="Date">
+            {{ event.date | date:'MMM d, yyyy' }}
+        </p>
+
+        <p class="flex items-center">
+            <img src="clock.svg" class="w-5 h-5 mr-2" alt="Date">
+            {{ event.date | date:'HH:mm' }}
+        </p>
+        <p class="flex items-center">
+            <img src="location.svg" class="w-5 h-5 mr-2" alt="Location">
+            {{ event.location }}
+        </p>
+    </div>
+
+    <div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">
+            Participants {{ event.currentParticipantsCount }}{{ event.capacity ? '/' + event.capacity : ''}}
+        </h2>
+        <ul class="divide-y divide-gray-200 border rounded-md overflow-hidden">
+            <li *ngFor="let user of event.participants" class="px-4 py-2 hover:bg-gray-50">
+                {{ user.fullName }}
+            </li>
+            <li *ngIf="!event.participants || event.participants.length === 0" class="px-4 py-2 text-gray-400">
+                No participants yet.
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<app-confirm-modal 
+    [show]="showDeleteModal" 
+    title="Delete Event?"
+    [message]="'Are you sure you want to delete ' + eventToDelete?.title + '?'" 
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()">
+</app-confirm-modal>

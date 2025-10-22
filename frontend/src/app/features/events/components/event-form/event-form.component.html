@@ -1,0 +1,104 @@
+<form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)">
+
+    <!-- TITLE -->
+    <div>
+        <label class="block font-semibold mb-1">Event Title <span class="text-red-500">&#42;</span></label>
+        <input type="text" name="title" placeholder="e.g., Tech Conference 2025" [(ngModel)]="model.title" required
+            #title="ngModel"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
+            [ngClass]="{ 'border-red-500': title.invalid && title.touched }" />
+        <p *ngIf="title.invalid && title.touched" class="text-red-500 text-sm mt-1">
+            Title is required.
+        </p>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="py-5">
+        <label class="block font-semibold mb-1">Description</label>
+        <textarea name="description" placeholder="Describe what makes youre event special..."
+            [(ngModel)]="model.description"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"></textarea>
+    </div>
+
+    <!-- DATE + TIME -->
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="block font-semibold mb-1">Date <span class="text-red-500">&#42;</span></label>
+            <input type="date" lang="en" name="date" [(ngModel)]="model.date" required #date="ngModel"  
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                [ngClass]="{ 'border-red-500': date.invalid && date.touched }" />
+            <p *ngIf="date.invalid && date.touched" class="text-red-500 text-sm mt-1">
+                Date is required.
+            </p>
+        </div>
+
+        <div>
+            <label class="block font-semibold mb-1">Time <span class="text-red-500">&#42;</span></label>
+            <input type="time" name="time" [(ngModel)]="model.time" required #time="ngModel"
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                [ngClass]="{ 'border-red-500': time.invalid && time.touched }" />
+            <p *ngIf="time.invalid && time.touched" class="text-red-500 text-sm mt-1">
+                Time is required.
+            </p>
+        </div>
+
+        <div *ngIf="serverError" class="text-red-500 text-sm mt-1">
+            {{ serverError }}
+        </div>
+    </div>
+
+    <!-- LOCATION -->
+    <div class="py-5">
+        <label class="block font-semibold mb-1">Location <span class="text-red-500">&#42;</span></label>
+        <input type="text" name="location" placeholder="e.g., Conversation Center, San Francisco"
+            [(ngModel)]="model.location" required #location="ngModel"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
+            [ngClass]="{ 'border-red-500': location.invalid && location.touched }" />
+        <p *ngIf="location.invalid && location.touched" class="text-red-500 text-sm mt-1">
+            Location is required.
+        </p>
+    </div>
+
+    <!-- CAPACITY -->
+    <div class="py-5">
+        <label class="block font-semibold mb-1">Capacity (optional)</label>
+        <input type="number" name="capacity" placeholder="Leave empty for unlimited" [(ngModel)]="model.capacity"
+            [ngModelOptions]="{ updateOn: 'blur' }" min="1"
+            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
+            (input)="model.capacity = model.capacity === null || model.capacity === 0 ? null : model.capacity" />
+        <p class="text-gray-500 text-sm mt-1">
+            Maximum number of participants. Leave empty for unlimited capacity.
+        </p>
+    </div>
+
+
+    <!-- VISIBILITY   -->
+    <div class="py-5">
+        <label class="block font-semibold mb-2">Visibility</label>
+        <div class="flex flex-col gap-2">
+            <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg">
+                <input type="radio" name="type" value="Public" [(ngModel)]="model.type" class="accent-blue-500" />
+                <span><strong>Public</strong> — Anyone can see and join the event</span>
+            </label>
+
+            <label class="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded-lg">
+                <input type="radio" name="type" value="Private" [(ngModel)]="model.type" class="accent-blue-500" />
+                <span><strong>Private</strong> — Only invited people can see this</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="flex gap-4 mt-6">
+        <button type="button"
+            class="w-full border border-gray-400 text-gray-700 py-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+            (click)="onCancel()">
+            Cancel
+        </button>
+
+        <button type="submit" [disabled]="eventForm.invalid"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+            {{ initialData ? 'Update Event' : 'Create Event' }}
+        </button>
+    </div>
+</form>

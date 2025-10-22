@@ -1,11 +1,11 @@
 import { Component, Input } from "@angular/core";
-import { ButtonComponent } from "../../../../shared/components/button/button.component";
 import { RouterModule } from "@angular/router";
 import { NgIf } from "@angular/common";
-
+import { CreateButtonComponent } from "../../../../shared/components/button/create-button/create-button.component";
+  
 @Component({
     selector: 'app-event-header',
-    imports: [ButtonComponent, RouterModule, NgIf],
+    imports: [CreateButtonComponent, RouterModule, NgIf],
     templateUrl: './event-header.component.html'
 })
 

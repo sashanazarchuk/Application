@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventSystem.Application.DTOs.Users;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,7 @@ namespace EventSystem.Application.DTOs.Event
         public bool IsFull => Capacity.HasValue && CurrentParticipantsCount >= Capacity;
         public bool IsJoined { get; set; }
         public bool IsAdmin { get; set; }
+        public List<ParticipantDto> Participants { get; set; } = new List<ParticipantDto>();
+
     }
 }

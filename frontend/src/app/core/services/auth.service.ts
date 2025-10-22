@@ -26,17 +26,18 @@ export class AuthService {
     }
 
     logout(skipServer: boolean = false) {
-        this.tokenService.setAccessToken(null);
-        localStorage.removeItem('refreshToken');
-
-        this.userService.clearCurrentUser();
-
+        
         if (!skipServer) {
             this.http.post(`${this.baseUrl}/auth/logout`, {}).subscribe({
                 next: () => console.log('Logged out on server'),
                 error: () => console.warn('Server logout failed')
             });
         }
+
+        this.userService.clearCurrentUser();      
+        this.tokenService.setAccessToken(null);
+        localStorage.removeItem('refreshToken');
+
     }
 
     isLoggedIn(): boolean {

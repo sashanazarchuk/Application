@@ -3,8 +3,8 @@
         <a routerLink="/events" class="text-gray-800 hover:text-blue-500 cursor-pointer">Events</a>
         <ng-container *ngIf="currentUser$ | async as user">
             <a routerLink="/" class="text-gray-800 hover:text-blue-500 cursor-pointer">My Events</a>
+            <app-create-button text="+ Create Event" link="/create"></app-create-button>
         </ng-container>
-        <app-button text="+ Create Event" link="/contact"></app-button>
 
         <ng-container *ngIf="currentUser$ | async as user; else showLogin">
             <span class="flex items-center space-x-2 text-gray-800 cursor-pointer">

@@ -5,5 +5,5 @@
 </app-event-header>
 
 <ng-container *ngIf="events$ | async as events">
-  <app-calendar-component [events]="events"></app-calendar-component>
+  <app-calendar-component [events]="events" (eventClick)="onEventClick($event)"></app-calendar-component>
 </ng-container>

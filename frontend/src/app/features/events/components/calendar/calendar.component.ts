@@ -9,7 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
   selector: 'app-calendar-component',
   imports: [CommonModule, FullCalendarModule],
   templateUrl: './calendar.component.html',
- })
+})
 
 export class CalendarComponent {
 
@@ -43,7 +43,12 @@ export class CalendarComponent {
     eventBackgroundColor: '#9c2bff',
 
     datesSet: (arg) => { this.calendarTitle = arg.view.title; this.cdr.detectChanges(); },
-    height: 'auto'
+    height: 'auto',
+
+    eventClick: (clickInfo) => {
+      this.eventClick.emit(clickInfo.event); 
+    }
+
   };
 
   ngOnChanges() {

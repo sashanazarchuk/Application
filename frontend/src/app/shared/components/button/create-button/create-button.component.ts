@@ -4,11 +4,11 @@ import { } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-button',
+  selector: 'app-create-button',
   imports: [RouterModule, NgIf, CommonModule],
-  templateUrl: './button.component.html',
+  templateUrl: './create-button.component.html',
 })
-export class ButtonComponent {
+export class CreateButtonComponent {
   @Input() text = '';
   @Input() link: string | null = null;
   @Input() bgColor = 'bg-violet-500';

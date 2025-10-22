@@ -5,6 +5,7 @@ import { EventDto } from "../../models/event.model";
 import { EventService } from "../../services/event.service";
 import { AsyncPipe, CommonModule, DatePipe, NgFor, NgIf } from "@angular/common";
 import { UserService } from "../../../../core/services/user.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-event-card',
@@ -18,9 +19,10 @@ export class EventCardComponent {
     currentUserId: string | null = null;
     private searchTerm$ = new BehaviorSubject<string>('');
 
-    constructor(private eventService: EventService, private userService: UserService) { }
+    constructor(private eventService: EventService, private userService: UserService, private router: Router) { }
 
     ngOnInit() {
+
         const user$ = this.userService.getCurrentUser().pipe(
             tap(user => this.currentUserId = user?.id || null)
         );
@@ -28,7 +30,6 @@ export class EventCardComponent {
         const allEvents$ = user$.pipe(
             switchMap(() => this.eventService.getPublicEvents())
         );
-
 
         this.events$ = combineLatest([allEvents$, this.searchTerm$]).pipe(
             map(([events, term]) =>
@@ -41,7 +42,7 @@ export class EventCardComponent {
         this.searchTerm$.next(term);
     }
 
-    
+
     onToggleJoin(event: EventDto) {
         if (!this.currentUserId) return;
 
@@ -50,9 +51,14 @@ export class EventCardComponent {
             : this.eventService.joinEvent(event.id);
 
         action$.pipe(
-            tap(() => event.isJoined = !event.isJoined)
+            switchMap(() => this.eventService.getPublicEvents())
         ).subscribe({
+            next: events => this.events$ = of(events),
             error: err => console.error('Failed to update event', err)
         });
+    }
+
+    goToEventDetails(event: EventDto) {
+        this.router.navigate(['/events', event.id]);
     }
 }

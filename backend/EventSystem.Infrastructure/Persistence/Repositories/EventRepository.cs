@@ -29,6 +29,8 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         {
             return await _context.Events
                .Include(e=>e.Participants)
+               .ThenInclude(c=>c.User)
+               .AsSplitQuery()
                .AsNoTracking()
                .FirstOrDefaultAsync(e => e.Id == id, token);
         }
