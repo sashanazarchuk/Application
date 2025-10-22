@@ -1,0 +1,9 @@
+<app-event-header
+  title="My Events"
+  subtitle="View and manage your event calendar"
+  [showCreateButton]="true">
+</app-event-header>
+
+<ng-container *ngIf="events$ | async as events">
+  <app-calendar-component [events]="events" (eventClick)="onEventClick($event)"></app-calendar-component>
+</ng-container>

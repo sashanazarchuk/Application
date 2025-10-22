@@ -1,0 +1,21 @@
+<header class="fixed top-0 left-0 w-full flex justify-end items-center p-4 bg-white shadow-md z-50">
+    <nav class="flex items-center space-x-6">
+        <a routerLink="/events" class="text-gray-800 hover:text-blue-500 cursor-pointer">Events</a>
+        <ng-container *ngIf="currentUser$ | async as user">
+            <a routerLink="/" class="text-gray-800 hover:text-blue-500 cursor-pointer">My Events</a>
+            <app-create-button text="+ Create Event" link="/create"></app-create-button>
+        </ng-container>
+
+        <ng-container *ngIf="currentUser$ | async as user; else showLogin">
+            <span class="flex items-center space-x-2 text-gray-800 cursor-pointer">
+                <img src="user.png" alt="User" class="h-8 w-7 object-contain" />
+                <span>{{ user.fullName }}</span>
+            </span>
+            <img src="logout.png" alt="Logout" class="h-8 w-7 cursor-pointer hover:opacity-80"
+                (click)="logout()" />
+        </ng-container>
+        <ng-template #showLogin>
+            <img src="login.png" alt="Login" class="h-8 w-7 mr-2 cursor-pointer hover:opacity-80" routerLink="/login" />
+        </ng-template>
+    </nav>
+</header>

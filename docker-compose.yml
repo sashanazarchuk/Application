@@ -1,0 +1,50 @@
+services:
+  event-management-system:
+    build:
+      context: ./backend
+      dockerfile: EventSystem.API/Dockerfile
+    container_name: event-management-system
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__sqlConnection: "Server=${DB_SERVER};Port=${DB_PORT};Database=${DB_NAME};User Id=${DB_USER};Password=${DB_PASSWORD};"
+      JwtSettings__Issuer: ${JWT_ISSUER}
+      JwtSettings__Audience: ${JWT_AUDIENCE}
+      JwtSettings__Secret: ${JWT_SECRET}
+      JwtSettings__AccessTokenExpirationMinutes: ${JWT_ACCESSTOKENEXPIRATIONMINUTES}
+      JwtSettings__RefreshTokenExpirationDays: ${JWT_REFRESHTOKENEXPIRATIONDAYS}
+    ports:
+      - "8080:8080"
+    depends_on:
+      event-system-db:
+        condition: service_healthy
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    command: ng serve --host 0.0.0.0
+  
+  event-system-db:
+    image: postgres:16
+    container_name: db_eventSystem
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - event-system-db-data:/var/lib/postgresql/data
+
+volumes:
+  event-system-db-data:
