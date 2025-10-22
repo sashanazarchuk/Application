@@ -10,8 +10,8 @@
 
     <div *ngIf="events.length > 0" class="flex flex-wrap -mx-2 p-10  max-w-full">
         <div *ngFor="let event of events" class="w-full sm:w-1/2 md:w-1/3 px-2 mb-4">
-            <div class="p-4 border rounded shadow hover:bg-gray-50 cursor-pointer h-full flex flex-col justify-between">
-                <h3 class="font-bold text-lg mb-1">
+            <div class="p-4 border rounded shadow hover:bg-gray-50 h-full flex flex-col justify-between">
+                <h3 class="font-bold text-lg mb-1 cursor-pointer">
                     <span class="inline-block px-1 transition-colors" (click)="goToEventDetails(event)"
                         [ngClass]="event.isAdmin ? 'text-blue-500 hover:text-blue-700' : 'text-gray-800 hover:text-blue-500'">
                         {{ event.title }}
