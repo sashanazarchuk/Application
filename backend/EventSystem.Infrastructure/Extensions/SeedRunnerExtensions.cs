@@ -29,9 +29,17 @@ namespace EventSystem.Infrastructure.Extensions
                 var userSeeder = services.GetRequiredService<UserSeeder>();
                 await userSeeder.SeedUserAsync();
 
+                // Seed tags
+                var tags = services.GetRequiredService<TagSeeder>();
+                await tags.SeedTagsAsync();
+
                 // Seed events
                 var eventSeeder = services.GetRequiredService<EventSeeder>();
                 await eventSeeder.SeedEventAsync();
+
+                // Seed event tags
+                var eventTags = services.GetRequiredService<EventTagSeeder>();
+                await eventTags.SeedEventTagsAsync();
 
                 // Seed participant
                 var participantSeeder = services.GetRequiredService<ParticipantSeeder>();

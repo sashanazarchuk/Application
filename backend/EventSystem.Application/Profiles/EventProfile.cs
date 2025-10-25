@@ -18,7 +18,9 @@ namespace EventSystem.Application.Profiles
              .ForMember(dest => dest.IsJoined, opt => opt.Ignore())
              .ForMember(dest => dest.IsAdmin, opt => opt.Ignore())
              .ForMember(dest => dest.Participants,
-                       opt => opt.MapFrom(src => src.Participants));
+                       opt => opt.MapFrom(src => src.Participants))
+             .ForMember(dest=>dest.Tags,
+                        opt => opt.MapFrom(src => src.EventTags.Select(et => et.Tag)));
 
             CreateMap<CreateEventDto, Event>()
             .ForMember(dest => dest.Participants, opt => opt.Ignore())

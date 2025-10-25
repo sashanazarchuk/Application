@@ -28,6 +28,8 @@ namespace EventSystem.Infrastructure.Extensions
 
             //Register Seeders
             services.AddScoped<UserSeeder>();
+            services.AddScoped<TagSeeder>();
+            services.AddScoped<EventTagSeeder>();
             services.AddScoped<EventSeeder>();
             services.AddScoped<ParticipantSeeder>();
 

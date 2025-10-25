@@ -20,16 +20,21 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Event>> GetAllAsync(CancellationToken token)
         {
             return await _context.Events
+                .Include(c=>c.EventTags)
+                    .ThenInclude(et=>et.Tag)    
                 .Include(e => e.Participants)
                 .Where(e => e.Type == EventType.Public)
                 .AsNoTracking()
+                .AsSplitQuery()
                 .ToListAsync(token);
         }
         public async Task<Event?> GetByIdAsync(Guid id, CancellationToken token)
         {
             return await _context.Events
+                .Include(c=>c.EventTags)
+                    .ThenInclude(et=>et.Tag)
                .Include(e=>e.Participants)
-               .ThenInclude(c=>c.User)
+                    .ThenInclude(c=>c.User)
                .AsSplitQuery()
                .AsNoTracking()
                .FirstOrDefaultAsync(e => e.Id == id, token);
