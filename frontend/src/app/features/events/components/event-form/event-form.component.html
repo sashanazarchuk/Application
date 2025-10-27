@@ -74,13 +74,18 @@
 
     <!-- TAGS -->
     <div class="py-5">
-        <label class="block font-semibold mb-1">Tags</label>
+        <label class="block font-semibold mb-1">Tags <span class="text-red-500">&#42;</span></label>
         <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
             [maxTags]="5">
         </app-tag-selector>
         <p class="text-gray-500 text-sm mt-1">
             You can select existing tags or create new ones (max 5).
         </p>
+
+        <p *ngIf="eventForm.submitted && (!model.tagNames || model.tagNames.length === 0)" class="text-red-500 text-sm mt-1">
+            At least one tag is required.
+        </p>
+
     </div>
 
 

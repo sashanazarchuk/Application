@@ -45,7 +45,10 @@ export class EventFormComponent {
     }
 
     onSubmit(form: any) {
-        if (form.invalid) return;
+        if (form.invalid || !this.model.tagNames || this.model.tagNames.length === 0) {
+            form.control.markAllAsTouched();  
+            return;
+        }
 
         const [year, month, day] = this.model.date.split('-');
         const [hours, minutes] = this.model.time.split(':');
