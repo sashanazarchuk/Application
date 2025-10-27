@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CreateEventDto } from "../../models/event.model";
 import { FormsModule } from "@angular/forms";
-import { NgClass, NgIf } from "@angular/common";
+import { CommonModule, NgClass, NgIf } from "@angular/common";
+import { TagService } from "../../services/tag.service";
+import { TagSelectorComponent } from "../../../../shared/components/tag/tag-selector/tag-selector.component";
 
 @Component({
 
     selector: 'app-event-form',
-    imports: [FormsModule, NgClass, NgIf],
-    templateUrl: './event-form.component.html'
+    imports: [FormsModule, NgClass, NgIf, CommonModule, TagSelectorComponent],
+    templateUrl: './event-form.component.html',
 })
 
 export class EventFormComponent {
@@ -15,6 +17,7 @@ export class EventFormComponent {
     @Output() formSubmit = new EventEmitter<CreateEventDto>();
     @Input() serverError: string | null = null;
 
+    availableTags: { name: string }[] = [];
 
     model: CreateEventDto = {
         title: '',
@@ -23,13 +26,22 @@ export class EventFormComponent {
         time: '',
         location: '',
         capacity: null,
-        type: 'Public'
+        type: 'Public',
+        tagNames: []
     };
+
+
+    constructor(private tagService: TagService) { }
 
     ngOnInit(): void {
         if (this.initialData) {
-            this.model = { ...this.initialData };
+            this.model = { ...this.initialData, tagNames: this.initialData.tagNames.map(t => t) };
         }
+
+        this.tagService.getAllTags().subscribe(tags => {
+            this.availableTags = tags.map(tag => ({ name: tag.name }));
+        });
+
     }
 
     onSubmit(form: any) {
@@ -57,6 +69,7 @@ export class EventFormComponent {
             location: '',
             capacity: null,
             type: 'Public',
+            tagNames: []
         };
 
         //this.router.navigate(['/events']);

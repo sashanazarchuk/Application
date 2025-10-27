@@ -6,20 +6,25 @@ import { EventService } from "../../services/event.service";
 import { AsyncPipe, CommonModule, DatePipe, NgFor, NgIf } from "@angular/common";
 import { UserService } from "../../../../core/services/user.service";
 import { Router } from "@angular/router";
+import { EventTagsComponent } from "../../../../shared/components/tag/event-tag/event-tag.component";
+import { TagService } from "../../services/tag.service";
+import { TagSelectorComponent } from "../../../../shared/components/tag/tag-selector/tag-selector.component";
 
 @Component({
     selector: 'app-event-card',
-    imports: [FormsModule, DatePipe, AsyncPipe, NgIf, NgFor, CommonModule],
+    imports: [FormsModule, DatePipe, AsyncPipe, NgIf, NgFor, CommonModule, EventTagsComponent, TagSelectorComponent],
     templateUrl: './event-card.component.html',
 })
 
 export class EventCardComponent {
 
+    selectedTags: string[] = [];
     events$!: Observable<EventDto[]>;
     currentUserId: string | null = null;
+    availableTags: { name: string }[] = [];
     private searchTerm$ = new BehaviorSubject<string>('');
 
-    constructor(private eventService: EventService, private userService: UserService, private router: Router) { }
+    constructor(private eventService: EventService, private userService: UserService, private router: Router, private tagService: TagService) { }
 
     ngOnInit() {
 
@@ -36,6 +41,11 @@ export class EventCardComponent {
                 events.filter(e => e.title.toLowerCase().includes(term.toLowerCase()))
             )
         );
+
+        this.tagService.getAllTags().subscribe({
+            next: tags => this.availableTags = tags.map(t => ({ name: t.name })),
+            error: err => console.error('Failed to load tags', err)
+        });
     }
 
     onSearch(term: string) {
@@ -60,5 +70,9 @@ export class EventCardComponent {
 
     goToEventDetails(event: EventDto) {
         this.router.navigate(['/events', event.id]);
+    }
+
+    onFilter() {
+        this.events$ = this.eventService.getEventsByTags(this.selectedTags);
     }
 }

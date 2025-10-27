@@ -8,11 +8,12 @@ import { UserService } from "../../../../core/services/user.service";
 import { ActionButtonComponent } from "../../../../shared/components/button/action-button/action-button.component";
 import { BackButtonComponent } from "../../../../shared/components/button/back-button/back-button.component";
 import { ConfirmModalComponent } from "../../../../shared/components/modal/confirm-modal.component";
+import { EventTagsComponent } from "../../../../shared/components/tag/event-tag/event-tag.component";
 
 @Component({
 
     selector: 'app-event-details',
-    imports: [NgFor, DatePipe, AsyncPipe, NgIf, ActionButtonComponent, CommonModule, BackButtonComponent, ConfirmModalComponent],
+    imports: [NgFor, DatePipe, AsyncPipe, NgIf, ActionButtonComponent, CommonModule, BackButtonComponent, ConfirmModalComponent, EventTagsComponent],
     templateUrl: './event-details.page.html'
 })
 

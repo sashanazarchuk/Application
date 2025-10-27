@@ -24,7 +24,7 @@
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block font-semibold mb-1">Date <span class="text-red-500">&#42;</span></label>
-            <input type="date" lang="en" name="date" [(ngModel)]="model.date" required #date="ngModel"  
+            <input type="date" lang="en" name="date" [(ngModel)]="model.date" required #date="ngModel"
                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 [ngClass]="{ 'border-red-500': date.invalid && date.touched }" />
             <p *ngIf="date.invalid && date.touched" class="text-red-500 text-sm mt-1">
@@ -70,6 +70,19 @@
             Maximum number of participants. Leave empty for unlimited capacity.
         </p>
     </div>
+
+
+    <!-- TAGS -->
+    <div class="py-5">
+        <label class="block font-semibold mb-1">Tags</label>
+        <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
+            [maxTags]="5">
+        </app-tag-selector>
+        <p class="text-gray-500 text-sm mt-1">
+            You can select existing tags or create new ones (max 5).
+        </p>
+    </div>
+
 
 
     <!-- VISIBILITY   -->

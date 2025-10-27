@@ -27,7 +27,7 @@ export class CalendarComponent {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
     events: this.events,
-
+   
     headerToolbar: {
       left: '',
       center: '',
@@ -39,6 +39,7 @@ export class CalendarComponent {
       minute: '2-digit',
       hour12: false
     },
+    
 
     eventBackgroundColor: '#9c2bff',
 
@@ -46,7 +47,7 @@ export class CalendarComponent {
     height: 'auto',
 
     eventClick: (clickInfo) => {
-      this.eventClick.emit(clickInfo.event); 
+      this.eventClick.emit(clickInfo.event);
     }
 
   };

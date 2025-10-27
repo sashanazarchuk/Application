@@ -1,0 +1,9 @@
+<div *ngIf="(tags?.length ?? 0) > 0" class="flex flex-wrap gap-2 mb-2">
+  <span
+    *ngFor="let tag of tags ?? []"
+    [ngClass]="getTagBgColor(tag.name)"
+    class="text-white text-xs font-medium px-2 py-1 rounded-full"
+  >
+    {{ tag.name }}
+  </span>
+</div>

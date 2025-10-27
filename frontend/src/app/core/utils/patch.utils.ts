@@ -24,7 +24,8 @@ export function mapEventToForm(event: EventDto): CreateEventDto {
         time: event.date.split('T')[1].slice(0, 5),
         location: event.location,
         capacity: event.capacity ?? null,
-        type: event.type
+        type: event.type,
+        tagNames: event.tags.map(tag => tag.name)
     };
 }
 

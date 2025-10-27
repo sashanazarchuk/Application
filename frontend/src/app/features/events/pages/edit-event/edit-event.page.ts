@@ -35,7 +35,7 @@ export class EditEventPage {
     handleEdit(updatedData: CreateEventDto) {
         if (!this.originalEvent) return;
 
-        const patchDoc =  buildPatchDoc(updatedData, this.originalEvent);
+        const patchDoc = buildPatchDoc(updatedData, this.originalEvent);
 
         this.eventService.editEvent(this.originalEvent.id, patchDoc).subscribe({
             next: updatedEvent => this.router.navigate(['/events', updatedEvent.id]),

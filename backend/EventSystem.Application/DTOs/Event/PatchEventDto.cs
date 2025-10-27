@@ -15,5 +15,7 @@ namespace EventSystem.Application.DTOs.Event
         public string? Location { get; set; }
         public int? Capacity { get; set; }
         public EventType? Type { get; set; }
+        public List<string>? TagNames { get; set; }
+
     }
 }

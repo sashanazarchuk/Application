@@ -29,6 +29,11 @@ namespace EventSystem.Application.Profiles
 
             CreateMap<PatchEventDto, Event>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<Event, PatchEventDto>()
+                .ForMember(dest => dest.TagNames,
+                    opt => opt.MapFrom(src => src.EventTags.Select(et => et.Tag.Name).ToList()));
+
         }
     }
 }

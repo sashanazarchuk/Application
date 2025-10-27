@@ -1,5 +1,6 @@
 ﻿using EventSystem.Application.Interfaces.Repositories;
 using EventSystem.Application.Interfaces.Services;
+using EventSystem.Application.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.DataSeed;
 using EventSystem.Infrastructure.Persistence.Repositories;
@@ -46,6 +47,8 @@ namespace EventSystem.Infrastructure.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
 
             return services;
         }
