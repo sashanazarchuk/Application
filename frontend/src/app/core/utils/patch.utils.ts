@@ -1,4 +1,5 @@
 import { CreateEventDto, EventDto } from "../../features/events/models/event.model";
+import { combineDateTime } from "./date.utils";
 
 export function createPatchDoc(updated: any, original: any): any[] {
     const patch: any[] = [];
@@ -10,25 +11,21 @@ export function createPatchDoc(updated: any, original: any): any[] {
     return patch;
 }
 
-export function combineDateTime(date: Date, time: Date): string {
-    const combined = new Date(date);
-    combined.setHours(time.getHours(), time.getMinutes(), 0, 0);  
-    return combined.toISOString().slice(0, 16) + 'Z';  
-}
-
 export function mapEventToForm(event: EventDto): CreateEventDto {
+    const dateObj = new Date(event.date);
+    const dateStr = dateObj.toISOString().slice(0, 10);
+    const timeStr = dateObj.toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit' });
     return {
         title: event.title,
         description: event.description,
-        date: event.date.split('T')[0],
-        time: event.date.split('T')[1].slice(0, 5),
+        date: dateStr,
+        time: timeStr,
         location: event.location,
         capacity: event.capacity ?? null,
         type: event.type,
         tagNames: event.tags.map(tag => tag.name)
     };
 }
-
 
 export function buildPatchDoc(updatedData: CreateEventDto, originalEvent: EventDto): any[] {
     const dateISO = combineDateTime(new Date(updatedData.date), new Date(`1970-01-01T${updatedData.time}:00`));

@@ -4,7 +4,7 @@
     <div>
         <label class="block font-semibold mb-1">Event Title <span class="text-red-500">&#42;</span></label>
         <input type="text" name="title" placeholder="e.g., Tech Conference 2025" [(ngModel)]="model.title" required
-            #title="ngModel" (blur)="onTitleBlur(title)" (focus)="onTitleFocus(title)"
+            #title="ngModel" (blur)="aiTags.onTitleBlur(title)" (focus)="aiTags.onTitleFocus(title)"
             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
             [ngClass]="{ 'border-red-500': title.invalid && title.touched }" />
         <p *ngIf="title.invalid && title.touched" class="text-red-500 text-sm mt-1">
@@ -12,20 +12,11 @@
         </p>
     </div>
 
-    
     <!-- TAGS -->
     <div class="py-5">
-        
-        <div *ngIf="suggestedTags.length > 0">
-            <span class="text-gray-500 text-sm">Suggested by AI:</span>
-            <div class="flex flex-wrap gap-2 mt-1">
-                <span *ngFor="let tag of suggestedTags"
-                    class="bg-blue-500 text-white px-2 py-1 rounded-full cursor-pointer"
-                    (click)="applySuggestedTag(tag)">
-                    {{ tag }} &#43;
-                </span>
-            </div>
-        </div>
+
+        <app-ai-tag-suggest [title]="model.title" (tagSelected)="applySuggestedTag($event)" #aiTags>
+        </app-ai-tag-suggest>
 
         <label class="block font-semibold mb-1 mt-2">Tags <span class="text-red-500">&#42;</span></label>
         <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
@@ -100,9 +91,6 @@
             Maximum number of participants. Leave empty for unlimited capacity.
         </p>
     </div>
-
-
-
 
     <!-- VISIBILITY   -->
     <div class="py-5">

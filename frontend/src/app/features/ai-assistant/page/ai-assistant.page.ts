@@ -36,6 +36,4 @@ export class AIAssistantPage {
         this.userMessage = messageToAI;
         this.sendToAI();
     }
-
-
 }
