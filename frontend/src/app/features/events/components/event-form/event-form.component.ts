@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CreateEventDto } from "../../models/event.model";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgModel } from "@angular/forms";
 import { CommonModule, NgClass, NgIf } from "@angular/common";
 import { TagService } from "../../services/tag.service";
 import { TagSelectorComponent } from "../../../../shared/components/tag/tag-selector/tag-selector.component";
+import { AIAssistantService } from "../../../ai-assistant/service/ai-assistant.service";
 
 @Component({
 
@@ -30,8 +31,10 @@ export class EventFormComponent {
         tagNames: []
     };
 
+    suggestedTags: string[] = [];
+    aiSuggestedOnce = false;
 
-    constructor(private tagService: TagService) { }
+    constructor(private tagService: TagService, private aiService: AIAssistantService) { }
 
     ngOnInit(): void {
         if (this.initialData) {
@@ -46,7 +49,7 @@ export class EventFormComponent {
 
     onSubmit(form: any) {
         if (form.invalid || !this.model.tagNames || this.model.tagNames.length === 0) {
-            form.control.markAllAsTouched();  
+            form.control.markAllAsTouched();
             return;
         }
 
@@ -75,6 +78,54 @@ export class EventFormComponent {
             tagNames: []
         };
 
-        //this.router.navigate(['/events']);
+    }
+
+    onTitleBlur(titleControl: NgModel) {
+        if (!titleControl.valid || !this.shouldAskAI(titleControl)) return;
+
+        this.requestTagRecommendations(this.model.title);
+    }
+
+    
+    onTitleFocus(titleControl: NgModel) {
+        
+        this.aiSuggestedOnce = false;
+    }
+
+    applySuggestedTag(tag: string) {
+
+        if (!this.model.tagNames.includes(tag) && this.model.tagNames.length < 5) {
+            this.model.tagNames = [...this.model.tagNames, tag];
+        }
+        
+        this.suggestedTags = this.suggestedTags.filter(t => t !== tag);
+    }
+    
+    private shouldAskAI(titleControl: NgModel): boolean {
+        return !this.aiSuggestedOnce || titleControl.touched === false;
+    }
+
+    private requestTagRecommendations(title: string) {
+        const message = `Recommend up to 5 tags for an event with title "${title}"`;
+
+        this.aiService.askAI(message).subscribe({
+            next: res => this.handleAIResponse(res.reply),
+            error: () => console.error('AI tag recommendation failed')
+        });
+    }
+
+    private handleAIResponse(reply: string) {
+        this.suggestedTags = [];
+        try {
+
+            const match = reply.match(/\[.*?\]/s);
+            if (!match) throw new Error("No JSON array found");
+
+            const tags = JSON.parse(match[0]) as string[];
+            this.suggestedTags = tags;
+            this.aiSuggestedOnce = true;
+        } catch (err) {
+            console.warn('AI response is not a valid JSON array:', reply, err);
+        }
     }
 }

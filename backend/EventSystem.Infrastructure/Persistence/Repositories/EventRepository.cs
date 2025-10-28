@@ -23,6 +23,7 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
                 .Include(c => c.EventTags)
                     .ThenInclude(et => et.Tag)
                 .Include(e => e.Participants)
+                    .ThenInclude(u=>u.User)
                 .Where(e => e.Type == EventType.Public)
                 .AsNoTracking()
                 .AsSplitQuery()
@@ -79,7 +80,12 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         {
             return await _context.Events
                 .Include(e => e.Participants)
+                    .ThenInclude(p => p.User)
+                .Include(e => e.EventTags)
+                    .ThenInclude(et => et.Tag)
                 .Where(e => e.AdminId == userId || e.Participants.Any(p => p.UserId == userId))
+                .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
 
@@ -89,6 +95,7 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
                 .Include(e => e.EventTags)
                     .ThenInclude(et => et.Tag)
                 .Include(p=>p.Participants)
+                    .ThenInclude(u=>u.User)
                 .Where(e => e.EventTags.Any(et => tags.Contains(et.Tag.Name)))
                 .AsSplitQuery()
                 .AsNoTracking()

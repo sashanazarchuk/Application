@@ -4,12 +4,42 @@
     <div>
         <label class="block font-semibold mb-1">Event Title <span class="text-red-500">&#42;</span></label>
         <input type="text" name="title" placeholder="e.g., Tech Conference 2025" [(ngModel)]="model.title" required
-            #title="ngModel"
+            #title="ngModel" (blur)="onTitleBlur(title)" (focus)="onTitleFocus(title)"
             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
             [ngClass]="{ 'border-red-500': title.invalid && title.touched }" />
         <p *ngIf="title.invalid && title.touched" class="text-red-500 text-sm mt-1">
             Title is required.
         </p>
+    </div>
+
+    
+    <!-- TAGS -->
+    <div class="py-5">
+        
+        <div *ngIf="suggestedTags.length > 0">
+            <span class="text-gray-500 text-sm">Suggested by AI:</span>
+            <div class="flex flex-wrap gap-2 mt-1">
+                <span *ngFor="let tag of suggestedTags"
+                    class="bg-blue-500 text-white px-2 py-1 rounded-full cursor-pointer"
+                    (click)="applySuggestedTag(tag)">
+                    {{ tag }} &#43;
+                </span>
+            </div>
+        </div>
+
+        <label class="block font-semibold mb-1 mt-2">Tags <span class="text-red-500">&#42;</span></label>
+        <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
+            [maxTags]="5">
+        </app-tag-selector>
+        <p class="text-gray-500 text-sm mt-1">
+            You can select existing tags or create new ones (max 5).
+        </p>
+
+        <p *ngIf="eventForm.submitted && (!model.tagNames || model.tagNames.length === 0)"
+            class="text-red-500 text-sm mt-1">
+            At least one tag is required.
+        </p>
+
     </div>
 
     <!-- DESCRIPTION -->
@@ -71,22 +101,6 @@
         </p>
     </div>
 
-
-    <!-- TAGS -->
-    <div class="py-5">
-        <label class="block font-semibold mb-1">Tags <span class="text-red-500">&#42;</span></label>
-        <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
-            [maxTags]="5">
-        </app-tag-selector>
-        <p class="text-gray-500 text-sm mt-1">
-            You can select existing tags or create new ones (max 5).
-        </p>
-
-        <p *ngIf="eventForm.submitted && (!model.tagNames || model.tagNames.length === 0)" class="text-red-500 text-sm mt-1">
-            At least one tag is required.
-        </p>
-
-    </div>
 
 
 

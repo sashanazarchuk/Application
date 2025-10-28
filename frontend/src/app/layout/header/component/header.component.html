@@ -4,6 +4,7 @@
         <ng-container *ngIf="currentUser$ | async as user">
             <a routerLink="/" class="text-gray-800 hover:text-blue-500 cursor-pointer">My Events</a>
             <app-create-button text="+ Create Event" link="/create"></app-create-button>
+            <a routerLink="/ai-assistant" class="text-gray-800 hover:text-blue-500 cursor-pointer">AI Assistant</a>
         </ng-container>
 
         <ng-container *ngIf="currentUser$ | async as user; else showLogin">

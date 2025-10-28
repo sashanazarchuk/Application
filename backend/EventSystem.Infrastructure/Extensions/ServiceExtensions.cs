@@ -34,6 +34,10 @@ namespace EventSystem.Infrastructure.Extensions
             services.AddScoped<EventSeeder>();
             services.AddScoped<ParticipantSeeder>();
 
+            //AI Settings
+            services.Configure<AISettings>(configuration.GetSection("AISettings"));
+            services.AddHttpClient<IAIService, AIService>();
+
             //JWT Settings
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.AddJwtAuthentication(configuration.GetSection("JwtSettings").Get<JwtSettings>()!);
@@ -49,6 +53,8 @@ namespace EventSystem.Infrastructure.Extensions
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<ITagService, TagService>();
+            services.AddSingleton<IPromptReaderService, PromptReaderService>();
+            services.AddScoped<IUserSnapshotService, UserSnapshotService>();
 
             return services;
         }
