@@ -19,7 +19,7 @@
         </app-ai-tag-suggest>
 
         <label class="block font-semibold mb-1 mt-2">Tags <span class="text-red-500">&#42;</span></label>
-        <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="model.tagNames" [allowAdd]="true"
+        <app-tag-selector [availableTags]="(availableTags$|async) || []" [(selectedTags)]="model.tagNames" [allowAdd]="true"
             [maxTags]="5">
         </app-tag-selector>
         <p class="text-gray-500 text-sm mt-1">

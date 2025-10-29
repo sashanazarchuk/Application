@@ -1,31 +1,29 @@
 import { Component } from "@angular/core";
 import { FormsModule } from '@angular/forms';
-import { AuthService } from "../../../../core/services/auth.service";
-import { Router, RouterModule } from "@angular/router";
-import { LoginDto } from "../../../../core/models/auth.model";
+import { RouterModule } from "@angular/router";
 import { AuthFormComponent } from "../../components/auth-form/auth-form.component";
-import { ErrorService } from "../../../../core/services/error.service";
+import { AppState } from "../../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { login } from "../../store/auth.actions";
+import { Observable } from "rxjs";
+import { selectAuthError } from "../../store/auth.selectors";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector: 'app-login',
-    imports: [FormsModule, RouterModule, AuthFormComponent],
+    imports: [FormsModule, RouterModule, AuthFormComponent, AsyncPipe],
     templateUrl: './login.page.html',
 })
 
 export class LoginPage {
-    errorMessage = '';
 
-    constructor(private authService: AuthService, private errorService: ErrorService, private router: Router) { }
+    errorMessage$: Observable<string | null>;
+
+    constructor(private store: Store<AppState>) {
+        this.errorMessage$ = this.store.select(selectAuthError);
+    }
 
     login(formData: { email: string; password: string }) {
-        const dto: LoginDto = {
-            email: formData.email,
-            password: formData.password,
-        };
-
-        this.authService.login(dto).subscribe({
-            next: () => this.router.navigate(['']),
-            error: (err) => this.errorMessage = this.errorService.parseValidationErrors(err)
-        });
+        this.store.dispatch(login({ dto: { email: formData.email, password: formData.password } }));
     }
 }

@@ -1,5 +1,5 @@
 <div class="pt-10 pl-20 mx-20">
-    <h1 class="text-3xl font-medium mb-2">AI Assistant</h1>
+    <h1 class="text-3xl font-medium mb-2 text-blue-400">AI Assistant</h1>
 
     <div class="mt-6 mb-6">
         <h3 class="text-gray-700 font-medium mb-2">Example questions:</h3>
@@ -16,15 +16,15 @@
     </div>
 
     <div class="space-y-4  ">
-        <input [(ngModel)]="userMessage" placeholder="Ask anything..." class="border p-2 w-full rounded" />
+        <input [(ngModel)]="userMessage" placeholder="Ask anything..."  class=" border border-gray-200 shadow-2xs bg-white  p-2 w-full rounded" />
 
-        <button (click)="sendToAI()" class="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
-            [disabled]="loading">
-            {{ loading ? 'Wait...' : 'Send' }}
+        <button (click)="sendToAI(userMessage)" class="bg-blue-600 hover:bg-blue-700 w-1/7 text-white px-4 py-2 rounded-3xl cursor-pointer "
+            [disabled]="loading$|async">
+            {{ (loading$|async) ? 'Wait...' : 'Send' }}
         </button>
 
-        <div *ngIf="aiReply" class="bg-white p-3 rounded shadow whitespace-pre-line h-full" [innerHTML]="aiReply">
-            {{ aiReply }}
+        <div *ngIf="aiReply$ | async as reply" class="bg-white p-3 rounded border-gray-200 shadow-2xs whitespace-pre-line h-full" [innerHTML]="reply">
+            {{ reply }}
         </div>
 
     </div>

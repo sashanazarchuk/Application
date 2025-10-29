@@ -62,10 +62,9 @@ Always respond in HTML format:
 - Separate each event or paragraph with <br> or <p>...</p>.  
 - Do not use Markdown formatting.
 - Keep the tone friendly, natural, and concise.  
+- If there are no AdminEvents, no JoinedEvents, or no matching events in any category, respond concisely and politely: <p>No events found for that time period.</p>
+= Do not add clarifying questions or explanations (e.g. “Do you want to join one?”).
 
-If no events match the query, respond politely with:
-
-<p>No events found for that time period.</p>
 
 For requests explicitly asking for tag recommendations for a specific event:
 

@@ -1,39 +1,35 @@
 import { Component } from "@angular/core";
-import { AIAssistantService } from "../service/ai-assistant.service";
 import { ExampleButtonComponent } from "../../../shared/components/button/example-button/example-button.component";
 import { FormsModule } from "@angular/forms";
-import { NgIf } from "@angular/common";
+import { AsyncPipe, NgIf } from "@angular/common";
+import { AppState } from "../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { selectAiReply, selectIsLoading } from "../store/ai-assistant.selectors";
+import { sendMessage } from "../store/ai-assistant.actions";
 
 @Component({
     selector: 'app-ai-assistant',
-    imports: [ExampleButtonComponent, FormsModule, NgIf],
+    imports: [ExampleButtonComponent, FormsModule, NgIf, AsyncPipe],
     templateUrl: './ai-assistant.page.html',
 })
 
 export class AIAssistantPage {
+
+    aiReply$: Observable<string>;
+    loading$: Observable<boolean>;
     userMessage: string = '';
-    aiReply: string = '';
-    loading = false;
 
-    constructor(private aiService: AIAssistantService) { }
+    constructor(private store: Store<AppState>) {
+        this.aiReply$ = this.store.select(selectAiReply);
+        this.loading$ = this.store.select(selectIsLoading);
+    }
 
-    sendToAI() {
-
-        this.loading = true;
-        this.aiService.askAI(this.userMessage).subscribe({
-            next: (res) => {
-                this.aiReply = res.reply;
-                this.loading = false;
-            },
-            error: () => {
-                this.aiReply = 'An error occurred. Please try again.';
-                this.loading = false;
-            }
-        });
+    sendToAI(userMessage: string) {
+        this.store.dispatch(sendMessage({ userMessage }));
     }
 
     setExample(messageToAI: string): void {
-        this.userMessage = messageToAI;
-        this.sendToAI();
+        this.sendToAI(messageToAI);
     }
 }

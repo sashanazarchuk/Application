@@ -2,10 +2,14 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { CreateEventDto } from "../../models/event.model";
 import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule, NgClass, NgIf } from "@angular/common";
-import { TagService } from "../../services/tag.service";
 import { TagSelectorComponent } from "../../../../shared/components/tag/tag-selector/tag-selector.component";
 import { AiTagSuggestComponent } from "../../../ai-assistant/components/ai-tag-suggestion/ai-tag-suggestion.component";
 import { combineDateTime } from "../../../../core/utils/date.utils";
+import { map, Observable } from "rxjs";
+import { loadAllTags } from "../../store/event.actions";
+import { AppState } from "../../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { selectTags } from "../../store/event.selectors";
 
 @Component({
     selector: 'app-event-form',
@@ -18,21 +22,21 @@ export class EventFormComponent {
     @Output() formSubmit = new EventEmitter<CreateEventDto>();
     @Input() serverError: string | null = null;
 
-    availableTags: { name: string }[] = [];
+    availableTags$!: Observable<{ name: string }[]>;
 
     model: CreateEventDto = this.getEmptyModel();
 
-    constructor(private tagService: TagService) { }
+    constructor(private store: Store<AppState>) { }
 
     ngOnInit(): void {
         if (this.initialData) {
             this.model = { ...this.initialData, tagNames: this.initialData.tagNames.map(t => t) };
         }
 
-        this.tagService.getAllTags().subscribe(tags => {
-            this.availableTags = tags.map(tag => ({ name: tag.name }));
-        });
-
+        this.store.dispatch(loadAllTags());
+        this.availableTags$ = this.store.select(selectTags).pipe(
+            map(tags => tags ? tags.map(t => ({ name: t.name })) : [])
+        );
     }
 
     onSubmit(form: NgForm) {

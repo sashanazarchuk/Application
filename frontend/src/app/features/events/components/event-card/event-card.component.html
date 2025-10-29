@@ -10,10 +10,11 @@
         </div>
 
         <div class="flex items-center space-x-4 pr-10">
-            <app-tag-selector [availableTags]="availableTags" [(selectedTags)]="selectedTags"
+            <app-tag-selector [availableTags]="(availableTags$ | async) || []" [(selectedTags)]="selectedTags"
                 class="w-48"></app-tag-selector>
 
-            <button class="bg-blue-600 text-white border-2 rounded-lg px-4 py-2 hover:bg-blue-700 cursor-pointer" (click)="onFilter()">
+            <button class="bg-blue-600 text-white border-2 rounded-lg px-4 py-2 hover:bg-blue-700 cursor-pointer"
+                (click)="onFilter()">
                 Filter
             </button>
         </div>
@@ -22,12 +23,13 @@
     <div *ngIf="events.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-10 max-w-full">
         <div *ngFor="let event of events">
 
-            <div class="p-4 border rounded shadow hover:bg-gray-50 flex flex-col h-full">
+            <div
+                class="p-4 border rounded border-gray-200 hover:bg-gray-50 flex flex-col h-full shadow-xl bg-white z-50">
 
-                <app-event-tags [tags]="event.tags.slice(0,1)"></app-event-tags>
+                <app-event-tags [tags]="event.tags"></app-event-tags>
 
-                <h3 class="font-bold text-lg mb-1 cursor-pointer">
-                    <span class="inline-block px-1 transition-colors" (click)="goToEventDetails(event)"
+                <h3 class="font-bold text-lg mb-1">
+                    <span class="inline-block px-1 cursor-pointer transition-colors" (click)="goToEventDetails(event)"
                         [ngClass]="event.isAdmin ? 'text-blue-500 hover:text-blue-700' : 'text-gray-800 hover:text-blue-500'">
                         {{ event.title }}
                     </span>
@@ -54,13 +56,13 @@
                         <span *ngIf="event.isFull"> - Full</span>
                     </p>
                 </div>
-                <button *ngIf="!event.isAdmin && currentUserId" class="text-white font-semibold py-2 px-4 w-full rounded-xl text-center 
-               hover:brightness-90 transition disabled:bg-gray-500 disabled:cursor-not-allowed" [ngClass]="event.isJoined
-                    ? 'bg-red-600 hover:bg-red-700 cursor-pointer'
-                    : 'bg-green-600 hover:bg-green-700 cursor-pointer'" (click)="onToggleJoin(event)"
+                <button *ngIf="!event.isAdmin && (currentUserId$ | async)" class="text-white font-semibold py-2 px-4 w-full rounded-xl text-center 
+               hover:brightness-90 transition disabled:bg-gray-500 disabled:cursor-not-allowed" [ngClass]="event.isJoined ? 'bg-red-600 hover:bg-red-700 cursor-pointer'
+                                  : 'bg-green-600 hover:bg-green-700 cursor-pointer'" (click)="onToggleJoin(event)"
                     [disabled]="!event.isJoined && event.isFull">
                     {{ event.isJoined ? 'Leave Event' : (event.isFull ? 'Full' : 'Join Event') }}
                 </button>
+
             </div>
 
         </div>
