@@ -12,6 +12,9 @@ services:
       JwtSettings__Secret: ${JWT_SECRET}
       JwtSettings__AccessTokenExpirationMinutes: ${JWT_ACCESSTOKENEXPIRATIONMINUTES}
       JwtSettings__RefreshTokenExpirationDays: ${JWT_REFRESHTOKENEXPIRATIONDAYS}
+      AISettings__ApiKey: ${AI_API_KEY}
+      AISettings__ApiUrl: ${AI_API_URL}
+      AISettings__Model: ${AI_MODEL}
     ports:
       - "8080:8080"
     depends_on:
