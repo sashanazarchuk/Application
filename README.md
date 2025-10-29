@@ -39,7 +39,7 @@ http://localhost:5016/swagger/index.html
 ```
 ## Environment Variables 
 Before running the backend locally, configure your PostgreSQL connection string.
-All sensitive data (database, JWT credentials) should be stored in Environment Variables.
+All sensitive data (database, JWT credentials, AI settings) should be stored in Environment Variables.
 Example appsettings.json structure for reference (values are left empty):
 
 ```json
@@ -53,6 +53,11 @@ Example appsettings.json structure for reference (values are left empty):
     "Secret": " ",
     "AccessTokenExpirationMinutes": 5,
     "RefreshTokenExpirationDays": 10
+  },
+  "AISettings": {
+    "ApiKey": "",
+    "ApiUrl": "",
+    "Model": ""
   }
 }
 
@@ -73,6 +78,11 @@ JWT_AUDIENCE=your_jwt_audience
 JWT_SECRET=your_jwt_secret
 JWT_ACCESSTOKENEXPIRATIONMINUTES=5
 JWT_REFRESHTOKENEXPIRATIONDAYS=10
+
+# AI settings
+AI_API_KEY=your_api_key
+AI_API_URL=your_api_url
+AI_MODEL=your_model
 ```
 Build and run Docker containers:
 ```bash
