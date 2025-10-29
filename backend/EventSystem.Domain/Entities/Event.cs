@@ -18,5 +18,7 @@ namespace EventSystem.Domain.Entities
         public User Admin { get; set; } = null!;
         public EventType Type { get; set; } = EventType.Public;
         public List<Participant> Participants { get; set; } = new();
+
+        public List<EventTag> EventTags { get; set; } = new();
     }
 }

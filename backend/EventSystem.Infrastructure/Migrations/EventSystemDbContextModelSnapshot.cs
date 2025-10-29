@@ -62,6 +62,21 @@ namespace EventSystem.Infrastructure.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("EventSystem.Domain.Entities.EventTag", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("EventId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("EventTags");
+                });
+
             modelBuilder.Entity("EventSystem.Domain.Entities.Participant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -84,6 +99,21 @@ namespace EventSystem.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Participants", (string)null);
+                });
+
+            modelBuilder.Entity("EventSystem.Domain.Entities.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("EventSystem.Domain.Entities.User", b =>
@@ -318,6 +348,25 @@ namespace EventSystem.Infrastructure.Migrations
                     b.Navigation("Admin");
                 });
 
+            modelBuilder.Entity("EventSystem.Domain.Entities.EventTag", b =>
+                {
+                    b.HasOne("EventSystem.Domain.Entities.Event", "Event")
+                        .WithMany("EventTags")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventSystem.Domain.Entities.Tag", "Tag")
+                        .WithMany("EventTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("EventSystem.Domain.Entities.Participant", b =>
                 {
                     b.HasOne("EventSystem.Domain.Entities.Event", "Event")
@@ -390,7 +439,14 @@ namespace EventSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("EventSystem.Domain.Entities.Event", b =>
                 {
+                    b.Navigation("EventTags");
+
                     b.Navigation("Participants");
+                });
+
+            modelBuilder.Entity("EventSystem.Domain.Entities.Tag", b =>
+                {
+                    b.Navigation("EventTags");
                 });
 
             modelBuilder.Entity("EventSystem.Domain.Entities.User", b =>

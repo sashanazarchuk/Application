@@ -1,4 +1,5 @@
-﻿using EventSystem.Domain.Enums;
+﻿using EventSystem.Application.DTOs.Tag;
+using EventSystem.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace EventSystem.Application.DTOs.Event
         public string Location { get; set; } = string.Empty;
         public int? Capacity { get; set; }
         public EventType Type { get; set; } = EventType.Public;
+        public List<string> TagNames { get; set; } = new();
     }
 }

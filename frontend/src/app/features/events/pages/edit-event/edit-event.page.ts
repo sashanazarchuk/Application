@@ -3,43 +3,49 @@ import { EventFormComponent } from "../../components/event-form/event-form.compo
 import { EventHeaderComponent } from "../../components/event-header/event-header.component";
 import { CreateEventDto, EventDto } from "../../models/event.model";
 import { buildPatchDoc, mapEventToForm } from "../../../../core/utils/patch.utils";
-import { EventService } from "../../services/event.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgIf } from "@angular/common";
+import { AsyncPipe, NgIf } from "@angular/common";
 import { BackButtonComponent } from "../../../../shared/components/button/back-button/back-button.component";
+import { Observable, take } from "rxjs";
+import { AppState } from "../../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { loadEventById, updateEvent } from "../../store/event.actions";
+import { selectSelectedEvent } from "../../store/event.selectors";
 
 @Component({
 
     selector: 'app-edit-event-form',
-    imports: [EventFormComponent, EventHeaderComponent, NgIf, BackButtonComponent],
+    imports: [EventFormComponent, EventHeaderComponent, NgIf, BackButtonComponent, AsyncPipe],
     templateUrl: './edit-event.page.html'
 })
 
 export class EditEventPage {
-    originalEvent!: EventDto;
+    selectedEvent$!: Observable<EventDto | null>;
     modelForForm!: CreateEventDto;
     serverErrors: string | null = null;
 
-    constructor(private route: ActivatedRoute, private eventService: EventService, private router: Router) { }
+    constructor(private route: ActivatedRoute, private store: Store<AppState>) { }
 
     ngOnInit(): void {
         const eventId = this.route.snapshot.paramMap.get('id');
         if (!eventId) return;
 
-        this.eventService.getEventById(eventId).subscribe(event => {
-            this.originalEvent = event;
-            this.modelForForm = mapEventToForm(event);
+        this.store.dispatch(loadEventById({ eventId }));
+
+        this.selectedEvent$ = this.store.select(selectSelectedEvent);
+
+        this.selectedEvent$.pipe(take(1)).subscribe(event => {
+            if (event) this.modelForForm = mapEventToForm(event);
         });
     }
 
     handleEdit(updatedData: CreateEventDto) {
-        if (!this.originalEvent) return;
+        this.selectedEvent$.pipe(take(1)).subscribe(originalEvent => {
+            if (!originalEvent) return;
 
-        const patchDoc =  buildPatchDoc(updatedData, this.originalEvent);
+            const patchDoc = buildPatchDoc(updatedData, originalEvent);
 
-        this.eventService.editEvent(this.originalEvent.id, patchDoc).subscribe({
-            next: updatedEvent => this.router.navigate(['/events', updatedEvent.id]),
-            error: err => this.serverErrors = err.error?.errors?.[0] ?? 'Something went wrong'
+            this.store.dispatch(updateEvent({ eventId: originalEvent.id, patch: patchDoc }));
         });
     }
 }

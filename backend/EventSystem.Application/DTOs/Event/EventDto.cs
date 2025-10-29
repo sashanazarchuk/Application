@@ -1,4 +1,5 @@
-﻿using EventSystem.Application.DTOs.Users;
+﻿using EventSystem.Application.DTOs.Tag;
+using EventSystem.Application.DTOs.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace EventSystem.Application.DTOs.Event
         public bool IsJoined { get; set; }
         public bool IsAdmin { get; set; }
         public List<ParticipantDto> Participants { get; set; } = new List<ParticipantDto>();
+        public List<TagDto > Tags { get; set; } = new();
 
     }
 }

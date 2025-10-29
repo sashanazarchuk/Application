@@ -4,12 +4,33 @@
     <div>
         <label class="block font-semibold mb-1">Event Title <span class="text-red-500">&#42;</span></label>
         <input type="text" name="title" placeholder="e.g., Tech Conference 2025" [(ngModel)]="model.title" required
-            #title="ngModel"
+            #title="ngModel" (blur)="aiTags.onTitleBlur(title)" (focus)="aiTags.onTitleFocus(title)"
             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400"
             [ngClass]="{ 'border-red-500': title.invalid && title.touched }" />
         <p *ngIf="title.invalid && title.touched" class="text-red-500 text-sm mt-1">
             Title is required.
         </p>
+    </div>
+
+    <!-- TAGS -->
+    <div class="py-5">
+
+        <app-ai-tag-suggest [title]="model.title" (tagSelected)="applySuggestedTag($event)" #aiTags>
+        </app-ai-tag-suggest>
+
+        <label class="block font-semibold mb-1 mt-2">Tags <span class="text-red-500">&#42;</span></label>
+        <app-tag-selector [availableTags]="(availableTags$|async) || []" [(selectedTags)]="model.tagNames" [allowAdd]="true"
+            [maxTags]="5">
+        </app-tag-selector>
+        <p class="text-gray-500 text-sm mt-1">
+            You can select existing tags or create new ones (max 5).
+        </p>
+
+        <p *ngIf="eventForm.submitted && (!model.tagNames || model.tagNames.length === 0)"
+            class="text-red-500 text-sm mt-1">
+            At least one tag is required.
+        </p>
+
     </div>
 
     <!-- DESCRIPTION -->
@@ -24,7 +45,7 @@
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block font-semibold mb-1">Date <span class="text-red-500">&#42;</span></label>
-            <input type="date" lang="en" name="date" [(ngModel)]="model.date" required #date="ngModel"  
+            <input type="date" lang="en" name="date" [(ngModel)]="model.date" required #date="ngModel"
                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 [ngClass]="{ 'border-red-500': date.invalid && date.touched }" />
             <p *ngIf="date.invalid && date.touched" class="text-red-500 text-sm mt-1">
@@ -70,7 +91,6 @@
             Maximum number of participants. Leave empty for unlimited capacity.
         </p>
     </div>
-
 
     <!-- VISIBILITY   -->
     <div class="py-5">

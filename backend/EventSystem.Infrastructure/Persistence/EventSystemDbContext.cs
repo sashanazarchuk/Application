@@ -27,5 +27,7 @@ namespace EventSystem.Infrastructure.Persistence
         public DbSet<Event> Events { get; set; }
         public DbSet<Participant> Participants { get; set; }
         public DbSet<User> DomainUsers { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<EventTag> EventTags { get; set; }
     }
 }

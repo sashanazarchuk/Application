@@ -5,5 +5,5 @@
   linkUrl="/register"
   linkActionText="Register here"
   (submitForm)="login($event)"
-  [errorMessage]="errorMessage">
+  [errorMessage]="errorMessage$ | async">
 </app-auth-form>

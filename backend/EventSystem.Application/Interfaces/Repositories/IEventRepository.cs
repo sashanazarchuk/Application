@@ -13,7 +13,7 @@ namespace EventSystem.Application.Interfaces.Repositories
 
         Task<Participant?> GetParticipantAsync(Guid eventId, Guid userId, CancellationToken token);
         Task LeaveEventAsync(Participant participant, CancellationToken token);
-        Task<IEnumerable<Event>> FetchUserEventsAsync(Guid userId, CancellationToken cancellationToken);
-
+        Task<IEnumerable<Event>> FetchUserEventsAsync(Guid userId, CancellationToken token);
+        Task<IEnumerable<Event>> GetEventsByTagsAsync(IEnumerable<string> tags, CancellationToken token);
     }
 }

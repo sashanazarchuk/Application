@@ -1,3 +1,6 @@
+import { UserDto } from "../../../core/models/user.model";
+import { TagDto } from "./tag.model";
+
 export interface EventDto {
   id: string;
   title: string;
@@ -11,13 +14,8 @@ export interface EventDto {
   isAdmin?: boolean;
   participants?: UserDto[];
   type?: EventType;
+  tags: TagDto[];
 }
-
-export interface UserDto {
-  id: string;
-  fullName: string;
-}
-
 
 export interface CreateEventDto {
   title: string;
@@ -27,6 +25,7 @@ export interface CreateEventDto {
   location: string;
   capacity?: number | null;
   type?: EventType;
+  tagNames: string[];
 }
 
 export type EventType = 'Public' | 'Private';

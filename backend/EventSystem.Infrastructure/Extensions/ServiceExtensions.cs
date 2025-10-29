@@ -1,5 +1,6 @@
 ﻿using EventSystem.Application.Interfaces.Repositories;
 using EventSystem.Application.Interfaces.Services;
+using EventSystem.Application.Services;
 using EventSystem.Application.Settings;
 using EventSystem.Infrastructure.Persistence.DataSeed;
 using EventSystem.Infrastructure.Persistence.Repositories;
@@ -28,8 +29,14 @@ namespace EventSystem.Infrastructure.Extensions
 
             //Register Seeders
             services.AddScoped<UserSeeder>();
+            services.AddScoped<TagSeeder>();
+            services.AddScoped<EventTagSeeder>();
             services.AddScoped<EventSeeder>();
             services.AddScoped<ParticipantSeeder>();
+
+            //AI Settings
+            services.Configure<AISettings>(configuration.GetSection("AISettings"));
+            services.AddHttpClient<IAIService, AIService>();
 
             //JWT Settings
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
@@ -44,6 +51,10 @@ namespace EventSystem.Infrastructure.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddSingleton<IPromptReaderService, PromptReaderService>();
+            services.AddScoped<IUserSnapshotService, UserSnapshotService>();
 
             return services;
         }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateEventDto, EventDto } from '../models/event.model';
@@ -43,4 +43,18 @@ export class EventService {
   deleteEvent(id: string) {
     return this.http.delete<void>(`${this.baseUrl}/events/${id}`);
   }
+
+  getEventsByTags(tags: string[]): Observable<EventDto[]> {
+    if (!tags?.length) {
+      return this.getPublicEvents();
+    }
+
+    let params = new HttpParams();
+    tags.forEach(tag => {
+      params = params.append('tagName', tag);
+    });
+
+    return this.http.get<EventDto[]>(`${this.baseUrl}/events/filter`, { params });
+  }
+
 }

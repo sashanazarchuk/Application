@@ -1,34 +1,29 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { AuthService } from "../../../../core/services/auth.service";
-import { Router, RouterModule } from "@angular/router";
-import { RegisterDto } from "../../../../core/models/auth.model";
+import { RouterModule } from "@angular/router";
 import { AuthFormComponent } from "../../components/auth-form/auth-form.component";
-import { ErrorService } from "../../../../core/services/error.service";
+import { AppState } from "../../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { register } from "../../store/auth.actions";
+import { Observable } from "rxjs";
+import { selectAuthError } from "../../store/auth.selectors";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector: 'app-register',
-    imports: [FormsModule, RouterModule, AuthFormComponent],
+    imports: [FormsModule, RouterModule, AuthFormComponent, AsyncPipe],
     templateUrl: './register.page.html',
 })
 
 export class RegisterPage {
 
-    errorMessage = '';
+    errorMessage$: Observable<string | null>;
 
-    constructor(private authService: AuthService, private errorService: ErrorService, private router: Router) { }
+    constructor(private store: Store<AppState>) { 
+        this.errorMessage$ = this.store.select(selectAuthError);
+    }
 
     register(formData: { fullname: string; email: string; password: string }) {
-        const dto: RegisterDto = {
-            fullname: formData.fullname,
-            email: formData.email,
-            password: formData.password,
-        };
-
-        this.authService.register(dto).subscribe({
-            next: () => this.router.navigate(['']),
-            error: (err) => this.errorMessage = this.errorService.parseValidationErrors(err)
-
-        });
+        this.store.dispatch(register({ dto: { fullname: formData.fullname, email: formData.email, password: formData.password } }));
     }
 }

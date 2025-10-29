@@ -1,0 +1,11 @@
+<ng-select
+  [items]="availableTags"
+  bindLabel="name"
+  bindValue="name"
+  [multiple]="true"
+  [addTag]="allowAdd"
+  [maxSelectedItems]="maxTags"
+  [(ngModel)]="selectedTags"
+  (change)="onChange(selectedTags)"
+  class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none placeholder-gray-400">
+</ng-select>

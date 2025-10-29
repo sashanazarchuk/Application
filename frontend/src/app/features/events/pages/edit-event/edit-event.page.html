@@ -7,6 +7,6 @@
         [showCreateButton]="false">
     </app-event-header>
 
-    <app-event-form  *ngIf="modelForForm" [initialData]="modelForForm" [serverError]="serverErrors" (formSubmit)="handleEdit($event)"></app-event-form>
+    <app-event-form  *ngIf="selectedEvent$ | async as selectedEvent" [initialData]="modelForForm" [serverError]="serverErrors" (formSubmit)="handleEdit($event)"></app-event-form>
 
 </div>

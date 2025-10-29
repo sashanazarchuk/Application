@@ -15,7 +15,7 @@
         </ng-container>
 
         <ng-template #joinLeaveButton>
-            <app-action-button *ngIf="currentUserId"
+            <app-action-button *ngIf="currentUserId$|async"
                 [text]="event.isJoined ? 'Leave Event' : (event.isFull ? 'Full' : 'Join Event')"
                 [bgColor]="event.isJoined ? 'bg-red-600' : 'bg-green-600'"
                 [hoverColor]="event.isJoined ? 'hover:bg-red-700' : 'hover:bg-green-700'"
@@ -24,6 +24,8 @@
             </app-action-button>
         </ng-template>
     </div>
+
+    <app-event-tags [tags]="event.tags"></app-event-tags>
 
     <div class="space-y-2">
         <h1 class="text-3xl font-bold text-gray-900">{{ event.title }}</h1>
@@ -62,10 +64,7 @@
 
 </div>
 
-<app-confirm-modal 
-    [show]="showDeleteModal" 
-    title="Delete Event?"
-    [message]="'Are you sure you want to delete ' + eventToDelete?.title + '?'" 
-    (confirm)="confirmDelete()"
+<app-confirm-modal [show]="showDeleteModal" title="Delete Event?"
+    [message]="'Are you sure you want to delete ' + eventToDelete?.title + '?'" (confirm)="confirmDelete()"
     (cancel)="cancelDelete()">
 </app-confirm-modal>

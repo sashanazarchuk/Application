@@ -7,6 +7,7 @@ using EventSystem.Application.Commands.Events.PatchEvent;
 using EventSystem.Application.DTOs.Event;
 using EventSystem.Application.Queries.Events.GetAllPublicEvents;
 using EventSystem.Application.Queries.Events.GetEventById;
+using EventSystem.Application.Queries.Events.GetEventsByTag;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -174,6 +175,22 @@ namespace EventSystem.API.Controllers
         public async Task<IActionResult> GetEventById(Guid id)
         {
             var events = await _mediator.Send(new GetEventByIdQuery(id));
+            return Ok(events);
+        }
+
+
+        /// <summary>
+        /// Get events filtered by tags
+        /// </summary>
+        /// <remarks>
+        /// This endpoint retrieves events that are associated with the specified tags.
+        /// No authentication is required. Returns an array of event that match the provided tags.
+        /// </remarks>
+        [HttpGet("filter")]
+        [AllowAnonymous]
+        public async Task<IActionResult> FetchFilteredEvents([FromQuery] IEnumerable<string> tagName)
+        {
+            var events = await _mediator.Send(new GetEventsByTagQuery(tagName));
             return Ok(events);
         }
     }

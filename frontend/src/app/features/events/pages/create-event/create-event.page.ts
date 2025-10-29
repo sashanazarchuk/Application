@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { EventService } from "../../services/event.service";
 import { CreateEventDto } from "../../models/event.model";
-import { Router } from "@angular/router";
 import { EventFormComponent } from "../../components/event-form/event-form.component";
 import { EventHeaderComponent } from "../../components/event-header/event-header.component";
-import { ErrorService } from "../../../../core/services/error.service";
 import { BackButtonComponent } from "../../../../shared/components/button/back-button/back-button.component";
+import { AppState } from "../../../../core/store/appState";
+import { Store } from "@ngrx/store";
+import { createEvent } from "../../store/event.actions";
  
 @Component({
 
@@ -18,19 +18,9 @@ export class CreateEventPage {
 
     serverErrors: string | null = null;
  
-    constructor(private eventService: EventService, private errorService: ErrorService, private router: Router) { }
+    constructor(private store: Store<AppState>) { }
 
     handleCreate(eventData: CreateEventDto) {
-        this.eventService.createEvent(eventData).subscribe({
-            next: (createdEvent) => {
-                 if (createdEvent?.id) {
-                this.router.navigate(['/events', createdEvent.id])};
-            },
-            error: err => {
-                const msg = this.errorService.parseValidationErrors(err);
-                this.serverErrors = msg;
-            }
-        });
+         this.store.dispatch(createEvent({ dto: eventData }));
     }
-
 }

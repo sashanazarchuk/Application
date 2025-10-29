@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EventSystem.Infrastructure.Services
 {
-    public class CurrentUserService : ICurrentUserService
+    internal class CurrentUserService : ICurrentUserService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

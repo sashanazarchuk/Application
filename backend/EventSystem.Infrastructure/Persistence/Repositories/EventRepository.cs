@@ -20,18 +20,23 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Event>> GetAllAsync(CancellationToken token)
         {
             return await _context.Events
+                .Include(c => c.EventTags)
+                    .ThenInclude(et => et.Tag)
                 .Include(e => e.Participants)
+                    .ThenInclude(u=>u.User)
                 .Where(e => e.Type == EventType.Public)
                 .AsNoTracking()
+                .AsSplitQuery()
                 .ToListAsync(token);
         }
         public async Task<Event?> GetByIdAsync(Guid id, CancellationToken token)
         {
             return await _context.Events
-               .Include(e=>e.Participants)
-               .ThenInclude(c=>c.User)
+                .Include(c => c.EventTags)
+                    .ThenInclude(et => et.Tag)
+               .Include(e => e.Participants)
+                    .ThenInclude(c => c.User)
                .AsSplitQuery()
-               .AsNoTracking()
                .FirstOrDefaultAsync(e => e.Id == id, token);
         }
         public async Task<Event> AddAsync(Event entity, CancellationToken token)
@@ -48,7 +53,7 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
 
         public async Task DeleteAsync(Event entity, CancellationToken token)
         {
-            _context.Events.Remove(entity); 
+            _context.Events.Remove(entity);
             await _context.SaveChangesAsync(token);
         }
 
@@ -75,7 +80,25 @@ namespace EventSystem.Infrastructure.Persistence.Repositories
         {
             return await _context.Events
                 .Include(e => e.Participants)
+                    .ThenInclude(p => p.User)
+                .Include(e => e.EventTags)
+                    .ThenInclude(et => et.Tag)
                 .Where(e => e.AdminId == userId || e.Participants.Any(p => p.UserId == userId))
+                .AsSplitQuery()
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IEnumerable<Event>> GetEventsByTagsAsync(IEnumerable<string> tags, CancellationToken cancellationToken)
+        {
+            return await _context.Events
+                .Include(e => e.EventTags)
+                    .ThenInclude(et => et.Tag)
+                .Include(p=>p.Participants)
+                    .ThenInclude(u=>u.User)
+                .Where(e => e.EventTags.Any(et => tags.Contains(et.Tag.Name)))
+                .AsSplitQuery()
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
     }

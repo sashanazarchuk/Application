@@ -22,6 +22,11 @@ namespace EventSystem.Application.Validators.Events
 
             RuleFor(x => x.Location)
                 .NotEmpty().WithMessage("Location is required.");
+
+            RuleFor(x => x.TagNames)
+                .NotEmpty()
+                .Must(t => t.Any())
+                .WithMessage("At least one tag is required.");
         }
 
         private bool BeInTheFuture(DateTime date)
