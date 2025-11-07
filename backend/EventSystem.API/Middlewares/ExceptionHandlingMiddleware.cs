@@ -40,6 +40,7 @@ namespace EventSystem.API.Middlewares
                 ForbiddenException forbiddenEx => (HttpStatusCode.Forbidden, forbiddenEx.Message),
                 FileNotFoundException filenNotFoundEx => (HttpStatusCode.NotFound, filenNotFoundEx.Message),
                 UnauthorizedAccessException unauthorizedAccessEx=> (HttpStatusCode.Unauthorized, unauthorizedAccessEx.Message),
+                TaskCanceledException => (HttpStatusCode.RequestTimeout, "The request to an external service timed out."),
                 _ => (HttpStatusCode.InternalServerError, "An unexpected error occurred.")
             };
 
